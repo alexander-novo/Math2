@@ -1,0 +1,33 @@
+package MathHelper;
+
+message Log {
+	required string name = 1;
+
+	message Session {
+		required string startTime = 1;
+		required int32 seed = 2;
+		required int32 difficulty = 3;
+
+		message Question {
+			required string time = 1;
+
+			required int32 x = 2;
+			required int32 y = 3;
+
+			required string operation = 4;
+
+			repeated string option = 5;
+
+			required string answer = 6;
+			repeated int32 attempt = 7;
+			required bool correct = 8;
+			required double correctPercent = 9;
+
+		}
+		repeated Question question = 4;
+		
+		required string endTime = 5;
+	}
+
+	repeated Session session = 2;
+}
