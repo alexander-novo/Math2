@@ -28,7 +28,8 @@ class MathOperation {
 					new MathOperation("Addition", '+', std::plus<int>());
 					new MathOperation("Subtraction", '-', std::minus<int>(), SECOND_LTHAN_FIRST);
 					new MathOperation("Multiplication", 'x', std::multiplies<int>(), TWO_DIG_MULT); 
-					new MathOperation("Division", 246, std::divides<int>(), TWO_DIG_MULT | REM_OUT | SECOND_LTHAN_FIRST);
+					//http://stackoverflow.com/a/15486664
+					new MathOperation("Division", 246u, std::divides<int>(), TWO_DIG_MULT | REM_OUT | SECOND_LTHAN_FIRST);
 				}
 		} _initialise;
 };

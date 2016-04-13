@@ -21,18 +21,39 @@
 
 using namespace std; 
 
+//Menu functions
 void getStartInfo(char*, char*, MathHelper::Log&, unsigned int&, unsigned int&);
-MathOperation* displayMainMenu(char*, char*, MathHelper::Log&, int);
+MathOperation* doMainMenu(char*, char*, MathHelper::Log&, int);
+void drawMainMenu(char*, MathHelper::Log&, unsigned int, unsigned int);
 void doQuestion(MathOperation*, MathHelper::Log::Session*, int);
 void drawQuestionMenu(int[], string[], int, int, int, int, int, MathOperation*, int);
 
+//Main menu functions
+void help(MathHelper::Log&);
+void options(MathHelper::Log&);
+void quit(MathHelper::Log&);
+
+//Generic functions
 string getCurrTime();
 int getDegreeFromInput(int, int, int);
 unsigned int getNumByPlace(unsigned int, unsigned int = 0);
 void getStrFromInput(std::regex, char*);
-bool doesFileExist(char*);
+bool doesFileExist(const char*);
 
+#ifdef _WIN32
 void playSound(int);
+#endif
+
+typedef void(*menuFunction)(MathHelper::Log&);
+//Global constants in case we ever want to change the parameters of the program
+const map<unsigned char, pair<char*, menuFunction>> menuFunctions = {
+	{ 'h', { "Help", help } },
+	{ 'o', { "Options", options } },
+	{ 'q', { "Quit the Program", quit } }
+};
+const char * PREVIOUS_FILE = ".previous";
+const unsigned int NUM_ANSWERS = 4; //Reperesents how many answers should be generated and displayed besides NONE OF THE ABOVE
+const unsigned int MAX_TRIES = 3; //How many tries we should give the user before marking the question incorrect
 
 //An object which keeps track of our log and writes it to the file when the program exits
 class WriteOnShutdown {
@@ -53,8 +74,8 @@ class WriteOnShutdown {
 			}
 			output.close();
 
-			//Then write the username to the _previous file
-			output.open("_previous", fstream::out | fstream::trunc);
+			//Then write the username to the PREVIOUS_FILE
+			output.open(PREVIOUS_FILE, fstream::out | fstream::trunc);
 			output << message.name();
 			output.close();
 
@@ -65,21 +86,19 @@ class WriteOnShutdown {
 
 			output.open(txtFilename, fstream::out | fstream::trunc);
 			output << message.DebugString();
+
+			cout << endl;
 		}
 };
-
-//Global constants in case we ever want to change the parameters of the program
-const unsigned int NUM_ANSWERS = 4; //Reperesents how many answers should be generated and displayed besides NONE OF THE ABOVE
-const unsigned int MAX_TRIES = 3; //How many tries we should give the user before marking the question incorrect
 
 int main() {
 	//Stuff we need to keep track of
 	char name[100];
-	char filename[100];
+	char* filename = new char[100];
 	unsigned int difficulty = 1;
 	unsigned int seed = time(NULL);
 
-	MathHelper::Log log;
+	MathHelper::Log& log = *new MathHelper::Log();
 	MathHelper::Log::Session* sesh;
 
 #ifdef __linux__
@@ -97,15 +116,17 @@ int main() {
 	srand(seed);
 
 	//When we exit the program, write our log to the output files
-	WriteOnShutdown write(filename, log);
+	static WriteOnShutdown write(filename, log);
 
 	//Now enter a loop of the user selecting problems and solving them
-	MathOperation* operation = displayMainMenu(name, filename, log, difficulty);
+	MathOperation* operation = doMainMenu(name, filename, log, difficulty);
 	while(operation != NULL) {
 		doQuestion(operation, sesh, difficulty);
-		operation = displayMainMenu(name, filename, log, difficulty);
+		operation = doMainMenu(name, filename, log, difficulty);
 	}
 }
+
+//MENU FUNCTIONS
 
 void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int& difficulty, unsigned int& seed) {
 	system("cls");
@@ -113,8 +134,8 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	cout << "  Enter your name: ";
 
 	//If we left off somewhere, let's resume
-	if (doesFileExist("_previous")) { 
-		fstream in("_previous", fstream::in);
+	if (doesFileExist(PREVIOUS_FILE)) { 
+		fstream in(PREVIOUS_FILE, fstream::in);
 		in.getline(name, 100);
 	}
 	getStrFromInput(regex("^[[:alpha:]]* ?[[:alpha:]]*$"), name);
@@ -145,47 +166,125 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	seed = stoi(_seed);
 }
 
-MathOperation* displayMainMenu(char* name, char* filename, MathHelper::Log& log, int difficulty) {
+MathOperation* doMainMenu(char* name, char* filename, MathHelper::Log& log, int difficulty) {
+	unsigned char chosen, maxOption = 'a' + MathOperation::getOperations().size() - 1;
+	unsigned int index = 0, longestOption = 0;
+	vector<MathOperation*> operations = MathOperation::getOperations();
+
+	
+	//If the user has previously answered a question this session, default to what category they just chose
+	//Otherwise, if the user hasn't seen the help menu before, we'll default to help
+	if(log.session_size() && log.session().rbegin()->question_size()) {
+		int i = 0;
+		for(vector<MathOperation*>::const_iterator it = operations.cbegin(); it != operations.end(); it++) {
+			if(!strcmp((*it)->name, log.session().rbegin()->question().rbegin()->operation().c_str())) {
+				break;
+			}
+			i++;
+		}
+		index = i;
+	} else if(!log.hasseenhelp()) {
+		index = operations.size();
+	}
+
+	//Calculate which option's name is longest
+	for(vector<MathOperation*>::const_iterator it = operations.cbegin(); it != operations.end(); it++) {
+		int length = strlen((*it)->name);
+		if(length > longestOption) longestOption = length;
+	}
+	for(map<unsigned char, pair<char*, menuFunction>>::const_iterator it = menuFunctions.cbegin(); it != menuFunctions.end(); it++) {
+		int length = strlen(it->second.first);
+		if(length > longestOption) longestOption = length;
+	}
+
+	do {
+		drawMainMenu(name, log, index, longestOption);
+		chosen = getch();
+		switch(chosen) {
+			case 3: //CTL-C
+				return NULL;
+				break;
+			case 0:
+			case 224: //ARROW-KEYS
+				//Move our selector up or down
+				switch(getch()) {
+					case 72: //UP
+						index--;
+						if(index >= operations.size() + menuFunctions.size()) index = operations.size() + menuFunctions.size() - 1;
+						break;
+					case 80: //DOWN
+						index++;
+						if(index >= operations.size() + menuFunctions.size()) index = 0;
+						break;
+				}
+				break;
+			case 13:
+				//Select whatever our cursor is currently on
+				if(index < operations.size()) return operations[index];
+				else {
+					map<unsigned char, pair<char*, menuFunction>>::const_iterator it = menuFunctions.cbegin();
+					advance(it, index - operations.size());
+					it->second.second(log);
+				}
+				break;
+			default:
+				if(menuFunctions.find(chosen) != menuFunctions.end()) {
+					menuFunctions.find(chosen)->second.second(log);
+				}
+				break;
+		}
+	} while(chosen < 'a' || chosen > maxOption);
+
+	return operations[chosen - 'a'];
+}
+
+void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned int longestOption) {
 	system("cls");
 
 	cout << "                  ARITHMETIC PRACTICE PROGRAM\n\n            Hello "
 		<< name
 		<< ", and welcome\n            to the Math Skills Practice Program.\n\n            This program allows you to practice your\n            math skills.\n\n            Choose what you want to practice in the\n            menu shown below.\n";
 	//Keep track of accuracy
-	if(log.mutable_session()->rbegin()->question_size()) cout << "            Current Accuracy: " 
+	if (log.mutable_session()->rbegin()->question_size()) cout << "            Current Accuracy: "
 		<< log.mutable_session()->rbegin()->mutable_question()->rbegin()->correctpercent() * 100
 		<< '%';
 	cout << "\n        -----------------------------------------------\n                  ARITHMETIC PRACTICE PROGRAM\n                          MAIN  MENU\n        -----------------------------------------------\n\n";
-	
+
 	//Write all of our math options to the main menu
 	vector<MathOperation*> operations = MathOperation::getOperations();
 	char option = 'a';
-	for(vector<MathOperation*>::const_iterator it = operations.begin(); it != operations.end(); it++) {
-		cout << "                     "
-			 << option
-			 << ".   "
-			 << (*it)->name << endl;
+	unsigned int _index = 0;
+	for (vector<MathOperation*>::const_iterator it = operations.begin(); it != operations.end(); it++) {
+		cout << "                   "
+			<< (_index == index ? "[ " : "  ")
+			<< option
+			<< ".   "
+			<< (*it)->name;
+		if(_index++ == index) {
+			for(int i = strlen((*it)->name); i < longestOption; i++) {
+				cout << " ";
+			}
+			cout << " ]";
+		}
+		cout << endl;
 		option++;
 	}
-	cout << "                     q.   Quit the Program\n\n";
-	cout << "        -----------------------------------------------\n\n        Enter your choice [ ";
-	for(char c = 'a'; c < option; c++) {
-		cout << c << ' ';
-	}
-	cout << "q ]";
-
-	//Then get the user's choice
-	char chosen;
-	do {
-		chosen = getch();
-		//3 is EOF and is sent when CTRL-c is pressed
-		if(chosen == 'q' || chosen == 3) {
-			cout << '\n';
-			return NULL;
+	cout << "                   ------\n";
+	//Now write all of our extraneous options
+	for (map<unsigned char, pair<char*, menuFunction>>::const_iterator it = menuFunctions.cbegin(); it != menuFunctions.cend(); it++) {
+		cout << "                   "
+			<< (_index == index ? "[ " : "  ")
+			<< it->first
+			<< ".   "
+			<< it->second.first;
+		if(_index++ == index) {
+			for(int i = strlen(it->second.first); i < longestOption; i++) {
+				cout << " ";
+			}
+			cout << " ]";
 		}
-	} while(chosen < 'a' || chosen >= option);
-
-	return operations[chosen - 'a'];
+		cout << endl;
+	}
 }
 
 void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty) {
@@ -339,6 +438,20 @@ void drawQuestionMenu(int answered[], string answers[], int answerDig, int diffi
 	cout << "        Please enter your answer [" << MAX_TRIES - tries << '/' << MAX_TRIES << "]: ";
 }
 
+//MAIN MENU FUNCTIONS
+
+void help(MathHelper::Log& log) {
+	//TODO: DO THIS
+}
+
+void options(MathHelper::Log& log) {
+	//TODO: DO THIS
+}
+
+void quit(MathHelper::Log& log) {
+	exit(0);
+}
+
 string getCurrTime() {
 	char timeStr[100];
 	time_t currTime = time(NULL);
@@ -376,6 +489,7 @@ int getDegreeFromInput(int min, int max, int def) {
 				exit(1);
 			case 13: //ENTER
 				return index + min;
+			case 0:
 			case 224: //ARROW KEYS
 				switch(getch()) {
 					case 75: //LEFT
@@ -473,7 +587,7 @@ void getStrFromInput(regex reg, char* buf) {
 	}
 }
 
-bool doesFileExist(char* fileName) {
+bool doesFileExist(const char* fileName) {
 	struct stat buf;
 	return (stat(fileName, &buf) == 0);
 }

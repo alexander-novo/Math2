@@ -2,6 +2,7 @@ package MathHelper;
 
 message Log {
 	required string name = 1;
+	optional bool hasSeenHelp = 2 [default = false];
 
 	message Session {
 		required string startTime = 1;
@@ -29,5 +30,5 @@ message Log {
 		required string endTime = 5;
 	}
 
-	repeated Session session = 2;
+	repeated Session session = 3;
 }

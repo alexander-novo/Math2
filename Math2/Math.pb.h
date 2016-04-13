@@ -464,10 +464,17 @@ class Log : public ::google::protobuf::Message {
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // repeated .MathHelper.Log.Session session = 2;
+  // optional bool hasSeenHelp = 2 [default = false];
+  bool has_hasseenhelp() const;
+  void clear_hasseenhelp();
+  static const int kHasSeenHelpFieldNumber = 2;
+  bool hasseenhelp() const;
+  void set_hasseenhelp(bool value);
+
+  // repeated .MathHelper.Log.Session session = 3;
   int session_size() const;
   void clear_session();
-  static const int kSessionFieldNumber = 2;
+  static const int kSessionFieldNumber = 3;
   const ::MathHelper::Log_Session& session(int index) const;
   ::MathHelper::Log_Session* mutable_session(int index);
   ::MathHelper::Log_Session* add_session();
@@ -480,12 +487,15 @@ class Log : public ::google::protobuf::Message {
  private:
   inline void set_has_name();
   inline void clear_has_name();
+  inline void set_has_hasseenhelp();
+  inline void clear_has_hasseenhelp();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session > session_;
+  bool hasseenhelp_;
   friend void  protobuf_AddDesc_Math_2eproto();
   friend void protobuf_AssignDesc_Math_2eproto();
   friend void protobuf_ShutdownFile_Math_2eproto();
@@ -1085,7 +1095,31 @@ inline void Log::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.name)
 }
 
-// repeated .MathHelper.Log.Session session = 2;
+// optional bool hasSeenHelp = 2 [default = false];
+inline bool Log::has_hasseenhelp() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Log::set_has_hasseenhelp() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Log::clear_has_hasseenhelp() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Log::clear_hasseenhelp() {
+  hasseenhelp_ = false;
+  clear_has_hasseenhelp();
+}
+inline bool Log::hasseenhelp() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.hasSeenHelp)
+  return hasseenhelp_;
+}
+inline void Log::set_hasseenhelp(bool value) {
+  set_has_hasseenhelp();
+  hasseenhelp_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.hasSeenHelp)
+}
+
+// repeated .MathHelper.Log.Session session = 3;
 inline int Log::session_size() const {
   return session_.size();
 }

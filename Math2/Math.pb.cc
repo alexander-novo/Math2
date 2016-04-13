@@ -41,8 +41,9 @@ void protobuf_AssignDesc_Math_2eproto() {
       "Math.proto");
   GOOGLE_CHECK(file != NULL);
   Log_descriptor_ = file->message_type(0);
-  static const int Log_offsets_[2] = {
+  static const int Log_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, hasseenhelp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, session_),
   };
   Log_reflection_ =
@@ -136,16 +137,17 @@ void protobuf_AddDesc_Math_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nMath.proto\022\nMathHelper\"\341\002\n\003Log\022\014\n\004name"
-    "\030\001 \002(\t\022(\n\007session\030\002 \003(\0132\027.MathHelper.Log"
-    ".Session\032\241\002\n\007Session\022\021\n\tstartTime\030\001 \002(\t\022"
-    "\014\n\004seed\030\002 \002(\005\022\022\n\ndifficulty\030\003 \002(\005\0222\n\010que"
-    "stion\030\004 \003(\0132 .MathHelper.Log.Session.Que"
-    "stion\022\017\n\007endTime\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004t"
-    "ime\030\001 \002(\t\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\topera"
-    "tion\030\004 \002(\t\022\016\n\006option\030\005 \003(\t\022\016\n\006answer\030\006 \002"
-    "(\t\022\017\n\007attempt\030\007 \003(\005\022\017\n\007correct\030\010 \002(\010\022\026\n\016"
-    "correctPercent\030\t \002(\001", 380);
+    "\n\nMath.proto\022\nMathHelper\"\375\002\n\003Log\022\014\n\004name"
+    "\030\001 \002(\t\022\032\n\013hasSeenHelp\030\002 \001(\010:\005false\022(\n\007se"
+    "ssion\030\003 \003(\0132\027.MathHelper.Log.Session\032\241\002\n"
+    "\007Session\022\021\n\tstartTime\030\001 \002(\t\022\014\n\004seed\030\002 \002("
+    "\005\022\022\n\ndifficulty\030\003 \002(\005\0222\n\010question\030\004 \003(\0132"
+    " .MathHelper.Log.Session.Question\022\017\n\007end"
+    "Time\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004time\030\001 \002(\t\022\t\n"
+    "\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\toperation\030\004 \002(\t\022\016"
+    "\n\006option\030\005 \003(\t\022\016\n\006answer\030\006 \002(\t\022\017\n\007attemp"
+    "t\030\007 \003(\005\022\017\n\007correct\030\010 \002(\010\022\026\n\016correctPerce"
+    "nt\030\t \002(\001", 408);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Math.proto", &protobuf_RegisterTypes);
   Log::default_instance_ = new Log();
@@ -1311,6 +1313,7 @@ void Log_Session::InternalSwap(Log_Session* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Log::kNameFieldNumber;
+const int Log::kHasSeenHelpFieldNumber;
 const int Log::kSessionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -1335,6 +1338,7 @@ void Log::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  hasseenhelp_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1375,8 +1379,11 @@ Log* Log::New(::google::protobuf::Arena* arena) const {
 }
 
 void Log::Clear() {
-  if (has_name()) {
-    name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (_has_bits_[0 / 32] & 3u) {
+    if (has_name()) {
+      name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+    hasseenhelp_ = false;
   }
   session_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1407,13 +1414,28 @@ bool Log::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_session;
+        if (input->ExpectTag(16)) goto parse_hasSeenHelp;
         break;
       }
 
-      // repeated .MathHelper.Log.Session session = 2;
+      // optional bool hasSeenHelp = 2 [default = false];
       case 2: {
-        if (tag == 18) {
+        if (tag == 16) {
+         parse_hasSeenHelp:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &hasseenhelp_)));
+          set_has_hasseenhelp();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_session;
+        break;
+      }
+
+      // repeated .MathHelper.Log.Session session = 3;
+      case 3: {
+        if (tag == 26) {
          parse_session:
           DO_(input->IncrementRecursionDepth());
          parse_loop_session:
@@ -1422,7 +1444,7 @@ bool Log::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_loop_session;
+        if (input->ExpectTag(26)) goto parse_loop_session;
         input->UnsafeDecrementRecursionDepth();
         if (input->ExpectAtEnd()) goto success;
         break;
@@ -1463,10 +1485,15 @@ void Log::SerializeWithCachedSizes(
       1, this->name(), output);
   }
 
-  // repeated .MathHelper.Log.Session session = 2;
+  // optional bool hasSeenHelp = 2 [default = false];
+  if (has_hasseenhelp()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->hasseenhelp(), output);
+  }
+
+  // repeated .MathHelper.Log.Session session = 3;
   for (unsigned int i = 0, n = this->session_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->session(i), output);
+      3, this->session(i), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1490,11 +1517,16 @@ void Log::SerializeWithCachedSizes(
         1, this->name(), target);
   }
 
-  // repeated .MathHelper.Log.Session session = 2;
+  // optional bool hasSeenHelp = 2 [default = false];
+  if (has_hasseenhelp()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->hasseenhelp(), target);
+  }
+
+  // repeated .MathHelper.Log.Session session = 3;
   for (unsigned int i = 0, n = this->session_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->session(i), target);
+        3, this->session(i), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1514,7 +1546,12 @@ int Log::ByteSize() const {
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
   }
-  // repeated .MathHelper.Log.Session session = 2;
+  // optional bool hasSeenHelp = 2 [default = false];
+  if (has_hasseenhelp()) {
+    total_size += 1 + 1;
+  }
+
+  // repeated .MathHelper.Log.Session session = 3;
   total_size += 1 * this->session_size();
   for (int i = 0; i < this->session_size(); i++) {
     total_size +=
@@ -1553,6 +1590,9 @@ void Log::MergeFrom(const Log& from) {
       set_has_name();
       name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
     }
+    if (from.has_hasseenhelp()) {
+      set_hasseenhelp(from.hasseenhelp());
+    }
   }
   if (from._internal_metadata_.have_unknown_fields()) {
     mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1584,6 +1624,7 @@ void Log::Swap(Log* other) {
 }
 void Log::InternalSwap(Log* other) {
   name_.Swap(&other->name_);
+  std::swap(hasseenhelp_, other->hasseenhelp_);
   session_.UnsafeArenaSwap(&other->session_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -2185,7 +2226,31 @@ void Log::clear_name() {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.name)
 }
 
-// repeated .MathHelper.Log.Session session = 2;
+// optional bool hasSeenHelp = 2 [default = false];
+bool Log::has_hasseenhelp() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void Log::set_has_hasseenhelp() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void Log::clear_has_hasseenhelp() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void Log::clear_hasseenhelp() {
+  hasseenhelp_ = false;
+  clear_has_hasseenhelp();
+}
+ bool Log::hasseenhelp() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.hasSeenHelp)
+  return hasseenhelp_;
+}
+ void Log::set_hasseenhelp(bool value) {
+  set_has_hasseenhelp();
+  hasseenhelp_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.hasSeenHelp)
+}
+
+// repeated .MathHelper.Log.Session session = 3;
 int Log::session_size() const {
   return session_.size();
 }
