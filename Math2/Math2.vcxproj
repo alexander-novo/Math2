@@ -168,6 +168,9 @@
     <Media Include="The Price is Right Losing Horn - Gaming Sound Effect (HD).wav" />
     <Media Include="Wrong Buzzer.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Math2.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
