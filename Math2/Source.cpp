@@ -1,12 +1,18 @@
-#include <conio.h>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <sys/stat.h> //To check if file exists
 #include <time.h>
-#include <Windows.h>
 
+#ifdef _WIN32
+#include <conio.h>
+#include <Windows.h>
 #pragma comment( lib, "winmm" )
+#elif defined __linux__ || defined __APPLE__
+#include <ncurses.h>
+#else
+#error Platform not supported
+#endif
 
 #include "resource1.h"
 
@@ -75,6 +81,10 @@ int main() {
 
 	MathHelper::Log log;
 	MathHelper::Log::Session* sesh;
+
+#ifdef __linux__
+	initscr();
+#endif
 
 	//Let's get the info we need to start the program (name, difficulty, etc.)
 	getStartInfo(name, filename, log, difficulty, seed);
@@ -167,7 +177,7 @@ MathOperation* displayMainMenu(char* name, char* filename, MathHelper::Log& log,
 	//Then get the user's choice
 	char chosen;
 	do {
-		chosen = _getch();
+		chosen = getch();
 		//3 is EOF and is sent when CTRL-c is pressed
 		if(chosen == 'q' || chosen == 3) {
 			cout << '\n';
@@ -230,7 +240,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 
 		char selection;
 		do {
-			selection = _getch();
+			selection = getch();
 			if(selection == 3) exit(0); //CTRL-c
 			if(selection < 'A' + NUM_ANSWERS) selection += 32;
 		} while(selection < 'a' || selection > 'a' + NUM_ANSWERS || answered[selection - 'a']);
@@ -288,7 +298,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	quest->set_correctpercent(correctSum / (double) (sesh->question_size()));
 
 	cout << endl << "        Press anything to continue...";
-	_getch();
+	getch();
 }
 
 void drawQuestionMenu(int answered[], string answers[], int answerDig, int difficulty, int op1, int op2, int op2Dig, MathOperation* operation, int tries) {
@@ -359,7 +369,7 @@ int getDegreeFromInput(int min, int max, int def) {
 		}
 		cout << ">";
 
-		button = _getch();
+		button = getch();
 		switch (button) {
 			case 3: //ctrl-c
 				cout << endl;
@@ -367,7 +377,7 @@ int getDegreeFromInput(int min, int max, int def) {
 			case 13: //ENTER
 				return index + min;
 			case 224: //ARROW KEYS
-				switch(_getch()) {
+				switch(getch()) {
 					case 75: //LEFT
 						if(index) index--;
 						else index = max - min;
@@ -421,7 +431,7 @@ void getStrFromInput(regex reg, char* buf) {
 	}
 
 	while(true) {
-		button = _getch();
+		button = getch();
 		unsigned int _index = index; //Store where we just were for use later, in case it changes
 		switch(button) {
 			case 3: //ctrl-c
@@ -468,6 +478,7 @@ bool doesFileExist(char* fileName) {
 	return (stat(fileName, &buf) == 0);
 }
 
+#ifdef _WIN32
 void playSound(int res) {
 	HANDLE found, sound;
 	LPVOID data;
@@ -479,3 +490,4 @@ void playSound(int res) {
 	UnlockResource(sound);
 	FreeResource(found);
 }
+#endif
