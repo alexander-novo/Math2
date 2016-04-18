@@ -53,8 +53,6 @@ const map<unsigned char, pair<char*, menuFunction>> menuFunctions = {
 	{ 'q', { "Quit the Program", quit } }
 };
 const char * PREVIOUS_FILE = ".previous";
-const unsigned int NUM_ANSWERS = 4; //Reperesents how many answers should be generated and displayed besides NONE OF THE ABOVE
-const unsigned int MAX_TRIES = 3; //How many tries we should give the user before marking the question incorrect
 const unsigned int NUM_OPTIONS = 4; //Number of options in the option menu
 
 //An object which keeps track of our log and writes it to the file when the program exits
@@ -297,10 +295,11 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 	cout << "\n                  " << (char)24 << (char)25 << " - Navigate   Enter - Select";
 }
 
-void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty) {
+void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, const int numAnswers, const int maxTries) {
 	unsigned int op2Dig, op2Max, op1, op2, answer, answerDig;
-	int answered[NUM_ANSWERS + 1] = {0};
-	string answers[NUM_ANSWERS + 1];
+	int* answered = new int[numAnswers + 1];
+	answered = { 0 };
+	string* answers = new string[numAnswers + 1];
 	
 	//The first operand is easy - any number with the number of digits equal to the difficulty
 	op1 = getNumByPlace(difficulty);
@@ -312,13 +311,13 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	op2 = getNumByPlace(op2Dig, op2Max);
 
 	//Now we choose which of the answers are correct
-	answer = rand() % (NUM_ANSWERS + 1);
+	answer = rand() % (numAnswers + 1);
 
 	//Calculate how many digits the answer will have, so we can make similar dummy answers
 	answerDig = (operation->op(op1, op2) ? log10(operation->op(op1, op2)) + 1 : 1);
 
 	//Fill our answers with the correct answer and dummy answers
-	for(int i = 0; i <= NUM_ANSWERS; i++) {
+	for (int i = 0; i <= numAnswers; i++) {
 		if(i == answer) {
 			answers[i] = to_string(operation->op(op1, op2));
 			if(operation->flag & MathOperation::REM_OUT) {
@@ -343,7 +342,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	//Now, enter a loop which keeps track of the number of tries and whether or not the person has gotten the correct answer
 	//Every loop, draw the menu and ask user for input
 	int tries = 0;
-	for(; tries < MAX_TRIES && !(answered[answer]); tries++) {
+	for(; tries < maxTries && !(answered[answer]); tries++) {
 		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries);
 		if(tries) playSound(IDR_WAVE2);
 
@@ -351,8 +350,8 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 		do {
 			selection = getch();
 			if(selection == 3) exit(0); //CTRL-c
-			if(selection < 'A' + NUM_ANSWERS) selection += 32;
-		} while(selection < 'a' || selection > 'a' + NUM_ANSWERS || answered[selection - 'a']);
+			if (selection < 'A' + numAnswers) selection += 32;
+		} while (selection < 'a' || selection > 'a' + numAnswers || answered[selection - 'a']);
 
 		answered[selection - 'a'] = tries + 1;
 	}
@@ -366,8 +365,8 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	} else {
 		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries);
 		playSound(IDR_WAVE3);
-		for(int i = 0; i < NUM_ANSWERS + 1; i++) {
-			if(answered[i] == MAX_TRIES) {
+		for (int i = 0; i < numAnswers + 1; i++) {
+			if (answered[i] == maxTries) {
 				cout << (char)('a' + i) << " Correct answer: " << (char)('a' + answer);
 			}
 		}
@@ -380,14 +379,14 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	quest->set_y(op2);
 	quest->set_operation(operation->name);
 
-	for(int i = 0; i < NUM_ANSWERS; i++) {
+	for (int i = 0; i < numAnswers; i++) {
 		quest->add_option(answers[i]);
 	}
 
 	quest->set_answer(answers[answer]);
 
 	for(int i = 0; i < tries; i++) {
-		for(int j = 0; j <= NUM_ANSWERS; j++) {
+		for (int j = 0; j <= numAnswers; j++) {
 			if(answered[j] == i + 1) {
 				quest->add_attempt(j);
 				break;
@@ -406,11 +405,16 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 
 	quest->set_correctpercent(correctSum / (double) (sesh->question_size()));
 
+	delete[] answered;
+	delete[] answers;
+	answered = nullptr;
+	answers = nullptr;
+
 	cout << endl << "        Press anything to continue...";
 	if(getch() == 3) exit(0);
 }
 
-void drawQuestionMenu(int answered[], string answers[], int answerDig, int difficulty, int op1, int op2, int op2Dig, MathOperation* operation, int tries) {
+void drawQuestionMenu(int answered[], string answers[], int answerDig, int difficulty, int op1, int op2, int op2Dig, MathOperation* operation, int tries, int numAnswers, int maxTries) {
 	system("cls");
 	/*
 		Display problem like so:
@@ -432,20 +436,20 @@ void drawQuestionMenu(int answered[], string answers[], int answerDig, int diffi
 	for(int i = 0; i < op2Dig + 2; i++) cout << "?";
 	cout << "\n\n\n";
 
-	for(int j = 0; j <= NUM_ANSWERS; j++) {
+	for (int j = 0; j <= numAnswers; j++) {
 		cout << "        (" << (char) ('a' + j) << ")  ";
 		if(answered[j]) {
 			for(int k = 0; k < answerDig; k++) {
 				cout << 'X';
 			}
 			if(answered[j] == tries) cout << " Incorrect!";
-		} else if(j == NUM_ANSWERS) {
+		} else if (j == numAnswers) {
 			cout << "NONE OF THE ABOVE";
 		} else cout << answers[j];
 		cout << endl;
 	}
 
-	cout << "        Please enter your answer [" << MAX_TRIES - tries << '/' << MAX_TRIES << "]: ";
+	cout << "        Please enter your answer [" << numAnswers - tries << '/' << maxTries << "]: ";
 }
 
 //MAIN MENU FUNCTIONS
@@ -461,9 +465,9 @@ void help(MathHelper::Log& log) {
 		<< " operations to be given a math\n            problem based on your current difficulty: "
 		<< log.session().rbegin()->difficulty()
 		<< ".\n            You will be given "
-		<< NUM_ANSWERS + 1
+		<< log.options().numanswers() + 1
 		<< " multiple choice\n            answers and "
-		<< MAX_TRIES
+		<< log.options().maxtries()
 		<< " tries to answer it correctly.\n\n            You can change these parameters in the\n            options menu.\n\n            Press anything to continue...";
 	log.set_hasseenhelp(true);
 	if(getch() == 3) exit(0);
