@@ -31,4 +31,13 @@ message Log {
 	}
 
 	repeated Session session = 3;
+
+	message Options {
+		optional int32 maxTries = 1 [default = 3];
+		optional int32 numAnswers = 2 [default = 4];
+		optional bool remainForm = 3 [default = false];
+		optional bool easyMult = 4 [default = true];
+	}
+
+	required Options options = 4;
 }

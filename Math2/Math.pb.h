@@ -37,6 +37,7 @@ void protobuf_AssignDesc_Math_2eproto();
 void protobuf_ShutdownFile_Math_2eproto();
 
 class Log;
+class Log_Options;
 class Log_Session;
 class Log_Session_Question;
 
@@ -386,6 +387,125 @@ class Log_Session : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class Log_Options : public ::google::protobuf::Message {
+ public:
+  Log_Options();
+  virtual ~Log_Options();
+
+  Log_Options(const Log_Options& from);
+
+  inline Log_Options& operator=(const Log_Options& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Log_Options& default_instance();
+
+  void Swap(Log_Options* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Log_Options* New() const { return New(NULL); }
+
+  Log_Options* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Log_Options& from);
+  void MergeFrom(const Log_Options& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Log_Options* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 maxTries = 1 [default = 3];
+  bool has_maxtries() const;
+  void clear_maxtries();
+  static const int kMaxTriesFieldNumber = 1;
+  ::google::protobuf::int32 maxtries() const;
+  void set_maxtries(::google::protobuf::int32 value);
+
+  // optional int32 numAnswers = 2 [default = 4];
+  bool has_numanswers() const;
+  void clear_numanswers();
+  static const int kNumAnswersFieldNumber = 2;
+  ::google::protobuf::int32 numanswers() const;
+  void set_numanswers(::google::protobuf::int32 value);
+
+  // optional bool remainForm = 3 [default = false];
+  bool has_remainform() const;
+  void clear_remainform();
+  static const int kRemainFormFieldNumber = 3;
+  bool remainform() const;
+  void set_remainform(bool value);
+
+  // optional bool easyMult = 4 [default = true];
+  bool has_easymult() const;
+  void clear_easymult();
+  static const int kEasyMultFieldNumber = 4;
+  bool easymult() const;
+  void set_easymult(bool value);
+
+  // @@protoc_insertion_point(class_scope:MathHelper.Log.Options)
+ private:
+  inline void set_has_maxtries();
+  inline void clear_has_maxtries();
+  inline void set_has_numanswers();
+  inline void clear_has_numanswers();
+  inline void set_has_remainform();
+  inline void clear_has_remainform();
+  inline void set_has_easymult();
+  inline void clear_has_easymult();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::int32 maxtries_;
+  ::google::protobuf::int32 numanswers_;
+  bool remainform_;
+  bool easymult_;
+  friend void  protobuf_AddDesc_Math_2eproto();
+  friend void protobuf_AssignDesc_Math_2eproto();
+  friend void protobuf_ShutdownFile_Math_2eproto();
+
+  void InitAsDefaultInstance();
+  static Log_Options* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Log : public ::google::protobuf::Message {
  public:
   Log();
@@ -449,6 +569,7 @@ class Log : public ::google::protobuf::Message {
   // nested types ----------------------------------------------------
 
   typedef Log_Session Session;
+  typedef Log_Options Options;
 
   // accessors -------------------------------------------------------
 
@@ -483,18 +604,33 @@ class Log : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session >&
       session() const;
 
+  // required .MathHelper.Log.Options options = 4;
+  bool has_options() const;
+  void clear_options();
+  static const int kOptionsFieldNumber = 4;
+  const ::MathHelper::Log_Options& options() const;
+  ::MathHelper::Log_Options* mutable_options();
+  ::MathHelper::Log_Options* release_options();
+  void set_allocated_options(::MathHelper::Log_Options* options);
+
   // @@protoc_insertion_point(class_scope:MathHelper.Log)
  private:
   inline void set_has_name();
   inline void clear_has_name();
   inline void set_has_hasseenhelp();
   inline void clear_has_hasseenhelp();
+  inline void set_has_options();
+  inline void clear_has_options();
+
+  // helper for ByteSize()
+  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session > session_;
+  ::MathHelper::Log_Options* options_;
   bool hasseenhelp_;
   friend void  protobuf_AddDesc_Math_2eproto();
   friend void protobuf_AssignDesc_Math_2eproto();
@@ -1040,6 +1176,106 @@ inline void Log_Session::set_allocated_endtime(::std::string* endtime) {
 
 // -------------------------------------------------------------------
 
+// Log_Options
+
+// optional int32 maxTries = 1 [default = 3];
+inline bool Log_Options::has_maxtries() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Log_Options::set_has_maxtries() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Log_Options::clear_has_maxtries() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Log_Options::clear_maxtries() {
+  maxtries_ = 3;
+  clear_has_maxtries();
+}
+inline ::google::protobuf::int32 Log_Options::maxtries() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.maxTries)
+  return maxtries_;
+}
+inline void Log_Options::set_maxtries(::google::protobuf::int32 value) {
+  set_has_maxtries();
+  maxtries_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.maxTries)
+}
+
+// optional int32 numAnswers = 2 [default = 4];
+inline bool Log_Options::has_numanswers() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Log_Options::set_has_numanswers() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Log_Options::clear_has_numanswers() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Log_Options::clear_numanswers() {
+  numanswers_ = 4;
+  clear_has_numanswers();
+}
+inline ::google::protobuf::int32 Log_Options::numanswers() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.numAnswers)
+  return numanswers_;
+}
+inline void Log_Options::set_numanswers(::google::protobuf::int32 value) {
+  set_has_numanswers();
+  numanswers_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.numAnswers)
+}
+
+// optional bool remainForm = 3 [default = false];
+inline bool Log_Options::has_remainform() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Log_Options::set_has_remainform() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Log_Options::clear_has_remainform() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Log_Options::clear_remainform() {
+  remainform_ = false;
+  clear_has_remainform();
+}
+inline bool Log_Options::remainform() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.remainForm)
+  return remainform_;
+}
+inline void Log_Options::set_remainform(bool value) {
+  set_has_remainform();
+  remainform_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.remainForm)
+}
+
+// optional bool easyMult = 4 [default = true];
+inline bool Log_Options::has_easymult() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Log_Options::set_has_easymult() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Log_Options::clear_has_easymult() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Log_Options::clear_easymult() {
+  easymult_ = true;
+  clear_has_easymult();
+}
+inline bool Log_Options::easymult() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.easyMult)
+  return easymult_;
+}
+inline void Log_Options::set_easymult(bool value) {
+  set_has_easymult();
+  easymult_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.easyMult)
+}
+
+// -------------------------------------------------------------------
+
 // Log
 
 // required string name = 1;
@@ -1149,7 +1385,52 @@ Log::session() const {
   return session_;
 }
 
+// required .MathHelper.Log.Options options = 4;
+inline bool Log::has_options() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Log::set_has_options() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Log::clear_has_options() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Log::clear_options() {
+  if (options_ != NULL) options_->::MathHelper::Log_Options::Clear();
+  clear_has_options();
+}
+inline const ::MathHelper::Log_Options& Log::options() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.options)
+  return options_ != NULL ? *options_ : *default_instance_->options_;
+}
+inline ::MathHelper::Log_Options* Log::mutable_options() {
+  set_has_options();
+  if (options_ == NULL) {
+    options_ = new ::MathHelper::Log_Options;
+  }
+  // @@protoc_insertion_point(field_mutable:MathHelper.Log.options)
+  return options_;
+}
+inline ::MathHelper::Log_Options* Log::release_options() {
+  clear_has_options();
+  ::MathHelper::Log_Options* temp = options_;
+  options_ = NULL;
+  return temp;
+}
+inline void Log::set_allocated_options(::MathHelper::Log_Options* options) {
+  delete options_;
+  options_ = options;
+  if (options) {
+    set_has_options();
+  } else {
+    clear_has_options();
+  }
+  // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.options)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

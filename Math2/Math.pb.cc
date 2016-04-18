@@ -30,6 +30,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* Log_Session_Question_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Log_Session_Question_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Log_Options_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Log_Options_reflection_ = NULL;
 
 }  // namespace
 
@@ -41,10 +44,11 @@ void protobuf_AssignDesc_Math_2eproto() {
       "Math.proto");
   GOOGLE_CHECK(file != NULL);
   Log_descriptor_ = file->message_type(0);
-  static const int Log_offsets_[3] = {
+  static const int Log_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, hasseenhelp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, session_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log, options_),
   };
   Log_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -99,6 +103,24 @@ void protobuf_AssignDesc_Math_2eproto() {
       sizeof(Log_Session_Question),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Session_Question, _internal_metadata_),
       -1);
+  Log_Options_descriptor_ = Log_descriptor_->nested_type(1);
+  static const int Log_Options_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, maxtries_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, numanswers_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, remainform_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, easymult_),
+  };
+  Log_Options_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      Log_Options_descriptor_,
+      Log_Options::default_instance_,
+      Log_Options_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, _has_bits_[0]),
+      -1,
+      -1,
+      sizeof(Log_Options),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Log_Options, _internal_metadata_),
+      -1);
 }
 
 namespace {
@@ -117,6 +139,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
       Log_Session_descriptor_, &Log_Session::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Log_Session_Question_descriptor_, &Log_Session_Question::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      Log_Options_descriptor_, &Log_Options::default_instance());
 }
 
 }  // namespace
@@ -128,6 +152,8 @@ void protobuf_ShutdownFile_Math_2eproto() {
   delete Log_Session_reflection_;
   delete Log_Session_Question::default_instance_;
   delete Log_Session_Question_reflection_;
+  delete Log_Options::default_instance_;
+  delete Log_Options_reflection_;
 }
 
 void protobuf_AddDesc_Math_2eproto() {
@@ -137,25 +163,30 @@ void protobuf_AddDesc_Math_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nMath.proto\022\nMathHelper\"\375\002\n\003Log\022\014\n\004name"
+    "\n\nMath.proto\022\nMathHelper\"\221\004\n\003Log\022\014\n\004name"
     "\030\001 \002(\t\022\032\n\013hasSeenHelp\030\002 \001(\010:\005false\022(\n\007se"
-    "ssion\030\003 \003(\0132\027.MathHelper.Log.Session\032\241\002\n"
-    "\007Session\022\021\n\tstartTime\030\001 \002(\t\022\014\n\004seed\030\002 \002("
-    "\005\022\022\n\ndifficulty\030\003 \002(\005\0222\n\010question\030\004 \003(\0132"
-    " .MathHelper.Log.Session.Question\022\017\n\007end"
-    "Time\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004time\030\001 \002(\t\022\t\n"
-    "\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\toperation\030\004 \002(\t\022\016"
-    "\n\006option\030\005 \003(\t\022\016\n\006answer\030\006 \002(\t\022\017\n\007attemp"
-    "t\030\007 \003(\005\022\017\n\007correct\030\010 \002(\010\022\026\n\016correctPerce"
-    "nt\030\t \002(\001", 408);
+    "ssion\030\003 \003(\0132\027.MathHelper.Log.Session\022(\n\007"
+    "options\030\004 \002(\0132\027.MathHelper.Log.Options\032\241"
+    "\002\n\007Session\022\021\n\tstartTime\030\001 \002(\t\022\014\n\004seed\030\002 "
+    "\002(\005\022\022\n\ndifficulty\030\003 \002(\005\0222\n\010question\030\004 \003("
+    "\0132 .MathHelper.Log.Session.Question\022\017\n\007e"
+    "ndTime\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004time\030\001 \002(\t\022"
+    "\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\toperation\030\004 \002(\t"
+    "\022\016\n\006option\030\005 \003(\t\022\016\n\006answer\030\006 \002(\t\022\017\n\007atte"
+    "mpt\030\007 \003(\005\022\017\n\007correct\030\010 \002(\010\022\026\n\016correctPer"
+    "cent\030\t \002(\001\032h\n\007Options\022\023\n\010maxTries\030\001 \001(\005:"
+    "\0013\022\025\n\nnumAnswers\030\002 \001(\005:\0014\022\031\n\nremainForm\030"
+    "\003 \001(\010:\005false\022\026\n\010easyMult\030\004 \001(\010:\004true", 556);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Math.proto", &protobuf_RegisterTypes);
   Log::default_instance_ = new Log();
   Log_Session::default_instance_ = new Log_Session();
   Log_Session_Question::default_instance_ = new Log_Session_Question();
+  Log_Options::default_instance_ = new Log_Options();
   Log::default_instance_->InitAsDefaultInstance();
   Log_Session::default_instance_->InitAsDefaultInstance();
   Log_Session_Question::default_instance_->InitAsDefaultInstance();
+  Log_Options::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_Math_2eproto);
 }
 
@@ -1312,9 +1343,358 @@ void Log_Session::InternalSwap(Log_Session* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Log_Options::kMaxTriesFieldNumber;
+const int Log_Options::kNumAnswersFieldNumber;
+const int Log_Options::kRemainFormFieldNumber;
+const int Log_Options::kEasyMultFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Log_Options::Log_Options()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:MathHelper.Log.Options)
+}
+
+void Log_Options::InitAsDefaultInstance() {
+}
+
+Log_Options::Log_Options(const Log_Options& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:MathHelper.Log.Options)
+}
+
+void Log_Options::SharedCtor() {
+  _cached_size_ = 0;
+  maxtries_ = 3;
+  numanswers_ = 4;
+  remainform_ = false;
+  easymult_ = true;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Log_Options::~Log_Options() {
+  // @@protoc_insertion_point(destructor:MathHelper.Log.Options)
+  SharedDtor();
+}
+
+void Log_Options::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Log_Options::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Log_Options::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Log_Options_descriptor_;
+}
+
+const Log_Options& Log_Options::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Math_2eproto();
+  return *default_instance_;
+}
+
+Log_Options* Log_Options::default_instance_ = NULL;
+
+Log_Options* Log_Options::New(::google::protobuf::Arena* arena) const {
+  Log_Options* n = new Log_Options;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Log_Options::Clear() {
+  if (_has_bits_[0 / 32] & 15u) {
+    maxtries_ = 3;
+    numanswers_ = 4;
+    remainform_ = false;
+    easymult_ = true;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  if (_internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->Clear();
+  }
+}
+
+bool Log_Options::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:MathHelper.Log.Options)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 maxTries = 1 [default = 3];
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxtries_)));
+          set_has_maxtries();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_numAnswers;
+        break;
+      }
+
+      // optional int32 numAnswers = 2 [default = 4];
+      case 2: {
+        if (tag == 16) {
+         parse_numAnswers:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &numanswers_)));
+          set_has_numanswers();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_remainForm;
+        break;
+      }
+
+      // optional bool remainForm = 3 [default = false];
+      case 3: {
+        if (tag == 24) {
+         parse_remainForm:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &remainform_)));
+          set_has_remainform();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_easyMult;
+        break;
+      }
+
+      // optional bool easyMult = 4 [default = true];
+      case 4: {
+        if (tag == 32) {
+         parse_easyMult:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &easymult_)));
+          set_has_easymult();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:MathHelper.Log.Options)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:MathHelper.Log.Options)
+  return false;
+#undef DO_
+}
+
+void Log_Options::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:MathHelper.Log.Options)
+  // optional int32 maxTries = 1 [default = 3];
+  if (has_maxtries()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->maxtries(), output);
+  }
+
+  // optional int32 numAnswers = 2 [default = 4];
+  if (has_numanswers()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->numanswers(), output);
+  }
+
+  // optional bool remainForm = 3 [default = false];
+  if (has_remainform()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->remainform(), output);
+  }
+
+  // optional bool easyMult = 4 [default = true];
+  if (has_easymult()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->easymult(), output);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:MathHelper.Log.Options)
+}
+
+::google::protobuf::uint8* Log_Options::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:MathHelper.Log.Options)
+  // optional int32 maxTries = 1 [default = 3];
+  if (has_maxtries()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->maxtries(), target);
+  }
+
+  // optional int32 numAnswers = 2 [default = 4];
+  if (has_numanswers()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->numanswers(), target);
+  }
+
+  // optional bool remainForm = 3 [default = false];
+  if (has_remainform()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->remainform(), target);
+  }
+
+  // optional bool easyMult = 4 [default = true];
+  if (has_easymult()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->easymult(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:MathHelper.Log.Options)
+  return target;
+}
+
+int Log_Options::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & 15u) {
+    // optional int32 maxTries = 1 [default = 3];
+    if (has_maxtries()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxtries());
+    }
+
+    // optional int32 numAnswers = 2 [default = 4];
+    if (has_numanswers()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->numanswers());
+    }
+
+    // optional bool remainForm = 3 [default = false];
+    if (has_remainform()) {
+      total_size += 1 + 1;
+    }
+
+    // optional bool easyMult = 4 [default = true];
+    if (has_easymult()) {
+      total_size += 1 + 1;
+    }
+
+  }
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Log_Options::MergeFrom(const ::google::protobuf::Message& from) {
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const Log_Options* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const Log_Options>(
+          &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Log_Options::MergeFrom(const Log_Options& from) {
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_maxtries()) {
+      set_maxtries(from.maxtries());
+    }
+    if (from.has_numanswers()) {
+      set_numanswers(from.numanswers());
+    }
+    if (from.has_remainform()) {
+      set_remainform(from.remainform());
+    }
+    if (from.has_easymult()) {
+      set_easymult(from.easymult());
+    }
+  }
+  if (from._internal_metadata_.have_unknown_fields()) {
+    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  }
+}
+
+void Log_Options::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Log_Options::CopyFrom(const Log_Options& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Log_Options::IsInitialized() const {
+
+  return true;
+}
+
+void Log_Options::Swap(Log_Options* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Log_Options::InternalSwap(Log_Options* other) {
+  std::swap(maxtries_, other->maxtries_);
+  std::swap(numanswers_, other->numanswers_);
+  std::swap(remainform_, other->remainform_);
+  std::swap(easymult_, other->easymult_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Log_Options::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Log_Options_descriptor_;
+  metadata.reflection = Log_Options_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Log::kNameFieldNumber;
 const int Log::kHasSeenHelpFieldNumber;
 const int Log::kSessionFieldNumber;
+const int Log::kOptionsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Log::Log()
@@ -1324,6 +1704,7 @@ Log::Log()
 }
 
 void Log::InitAsDefaultInstance() {
+  options_ = const_cast< ::MathHelper::Log_Options*>(&::MathHelper::Log_Options::default_instance());
 }
 
 Log::Log(const Log& from)
@@ -1339,6 +1720,7 @@ void Log::SharedCtor() {
   _cached_size_ = 0;
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   hasseenhelp_ = false;
+  options_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1350,6 +1732,7 @@ Log::~Log() {
 void Log::SharedDtor() {
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
+    delete options_;
   }
 }
 
@@ -1379,11 +1762,14 @@ Log* Log::New(::google::protobuf::Arena* arena) const {
 }
 
 void Log::Clear() {
-  if (_has_bits_[0 / 32] & 3u) {
+  if (_has_bits_[0 / 32] & 11u) {
     if (has_name()) {
       name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
     }
     hasseenhelp_ = false;
+    if (has_options()) {
+      if (options_ != NULL) options_->::MathHelper::Log_Options::Clear();
+    }
   }
   session_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1446,6 +1832,19 @@ bool Log::MergePartialFromCodedStream(
         }
         if (input->ExpectTag(26)) goto parse_loop_session;
         input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(34)) goto parse_options;
+        break;
+      }
+
+      // required .MathHelper.Log.Options options = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_options:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_options()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -1496,6 +1895,12 @@ void Log::SerializeWithCachedSizes(
       3, this->session(i), output);
   }
 
+  // required .MathHelper.Log.Options options = 4;
+  if (has_options()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, *this->options_, output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1529,6 +1934,13 @@ void Log::SerializeWithCachedSizes(
         3, this->session(i), target);
   }
 
+  // required .MathHelper.Log.Options options = 4;
+  if (has_options()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        4, *this->options_, target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1537,14 +1949,41 @@ void Log::SerializeWithCachedSizes(
   return target;
 }
 
-int Log::ByteSize() const {
+int Log::RequiredFieldsByteSizeFallback() const {
   int total_size = 0;
 
-  // required string name = 1;
   if (has_name()) {
+    // required string name = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
+  }
+
+  if (has_options()) {
+    // required .MathHelper.Log.Options options = 4;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->options_);
+  }
+
+  return total_size;
+}
+int Log::ByteSize() const {
+  int total_size = 0;
+
+  if (((_has_bits_[0] & 0x00000009) ^ 0x00000009) == 0) {  // All required fields are present.
+    // required string name = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
+
+    // required .MathHelper.Log.Options options = 4;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->options_);
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
   }
   // optional bool hasSeenHelp = 2 [default = false];
   if (has_hasseenhelp()) {
@@ -1593,6 +2032,9 @@ void Log::MergeFrom(const Log& from) {
     if (from.has_hasseenhelp()) {
       set_hasseenhelp(from.hasseenhelp());
     }
+    if (from.has_options()) {
+      mutable_options()->::MathHelper::Log_Options::MergeFrom(from.options());
+    }
   }
   if (from._internal_metadata_.have_unknown_fields()) {
     mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1612,7 +2054,7 @@ void Log::CopyFrom(const Log& from) {
 }
 
 bool Log::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x00000009) != 0x00000009) return false;
 
   if (!::google::protobuf::internal::AllAreInitialized(this->session())) return false;
   return true;
@@ -1626,6 +2068,7 @@ void Log::InternalSwap(Log* other) {
   name_.Swap(&other->name_);
   std::swap(hasseenhelp_, other->hasseenhelp_);
   session_.UnsafeArenaSwap(&other->session_);
+  std::swap(options_, other->options_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -2171,6 +2614,106 @@ void Log_Session::clear_endtime() {
 
 // -------------------------------------------------------------------
 
+// Log_Options
+
+// optional int32 maxTries = 1 [default = 3];
+bool Log_Options::has_maxtries() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void Log_Options::set_has_maxtries() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void Log_Options::clear_has_maxtries() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void Log_Options::clear_maxtries() {
+  maxtries_ = 3;
+  clear_has_maxtries();
+}
+ ::google::protobuf::int32 Log_Options::maxtries() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.maxTries)
+  return maxtries_;
+}
+ void Log_Options::set_maxtries(::google::protobuf::int32 value) {
+  set_has_maxtries();
+  maxtries_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.maxTries)
+}
+
+// optional int32 numAnswers = 2 [default = 4];
+bool Log_Options::has_numanswers() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void Log_Options::set_has_numanswers() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void Log_Options::clear_has_numanswers() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void Log_Options::clear_numanswers() {
+  numanswers_ = 4;
+  clear_has_numanswers();
+}
+ ::google::protobuf::int32 Log_Options::numanswers() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.numAnswers)
+  return numanswers_;
+}
+ void Log_Options::set_numanswers(::google::protobuf::int32 value) {
+  set_has_numanswers();
+  numanswers_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.numAnswers)
+}
+
+// optional bool remainForm = 3 [default = false];
+bool Log_Options::has_remainform() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+void Log_Options::set_has_remainform() {
+  _has_bits_[0] |= 0x00000004u;
+}
+void Log_Options::clear_has_remainform() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+void Log_Options::clear_remainform() {
+  remainform_ = false;
+  clear_has_remainform();
+}
+ bool Log_Options::remainform() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.remainForm)
+  return remainform_;
+}
+ void Log_Options::set_remainform(bool value) {
+  set_has_remainform();
+  remainform_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.remainForm)
+}
+
+// optional bool easyMult = 4 [default = true];
+bool Log_Options::has_easymult() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+void Log_Options::set_has_easymult() {
+  _has_bits_[0] |= 0x00000008u;
+}
+void Log_Options::clear_has_easymult() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+void Log_Options::clear_easymult() {
+  easymult_ = true;
+  clear_has_easymult();
+}
+ bool Log_Options::easymult() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.Options.easyMult)
+  return easymult_;
+}
+ void Log_Options::set_easymult(bool value) {
+  set_has_easymult();
+  easymult_ = value;
+  // @@protoc_insertion_point(field_set:MathHelper.Log.Options.easyMult)
+}
+
+// -------------------------------------------------------------------
+
 // Log
 
 // required string name = 1;
@@ -2278,6 +2821,49 @@ const ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session >&
 Log::session() const {
   // @@protoc_insertion_point(field_list:MathHelper.Log.session)
   return session_;
+}
+
+// required .MathHelper.Log.Options options = 4;
+bool Log::has_options() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+void Log::set_has_options() {
+  _has_bits_[0] |= 0x00000008u;
+}
+void Log::clear_has_options() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+void Log::clear_options() {
+  if (options_ != NULL) options_->::MathHelper::Log_Options::Clear();
+  clear_has_options();
+}
+const ::MathHelper::Log_Options& Log::options() const {
+  // @@protoc_insertion_point(field_get:MathHelper.Log.options)
+  return options_ != NULL ? *options_ : *default_instance_->options_;
+}
+::MathHelper::Log_Options* Log::mutable_options() {
+  set_has_options();
+  if (options_ == NULL) {
+    options_ = new ::MathHelper::Log_Options;
+  }
+  // @@protoc_insertion_point(field_mutable:MathHelper.Log.options)
+  return options_;
+}
+::MathHelper::Log_Options* Log::release_options() {
+  clear_has_options();
+  ::MathHelper::Log_Options* temp = options_;
+  options_ = NULL;
+  return temp;
+}
+void Log::set_allocated_options(::MathHelper::Log_Options* options) {
+  delete options_;
+  options_ = options;
+  if (options) {
+    set_has_options();
+  } else {
+    clear_has_options();
+  }
+  // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.options)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
