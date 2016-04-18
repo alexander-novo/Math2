@@ -68,7 +68,7 @@ class WriteOnShutdown {
 
 			//Write to the main file
 			fstream output(filename, fstream::out | fstream::trunc | fstream::binary);
-			if(!message.SerializeToOstream(&output)) {
+			if (!message.IsInitialized() || !message.SerializeToOstream(&output)) {
 				cout << "Error writing output file." << endl;
 				return;
 			}
