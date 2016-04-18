@@ -146,12 +146,15 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	cout << endl;
 
 	//Now check if the user has a log file, then load it for defaults
+	bool init = false;
 	if (doesFileExist(filename)) {
 		fstream in(filename, fstream::in | fstream::binary);
-		if (!log.ParseFromIstream(&in)) {
-			log.set_name(name);
-		}
-	} else log.set_name(name);
+		init = log.ParseFromIstream(&in);
+	}
+	if (!init) {
+		log.set_name(name);
+		*log.mutable_options() = MathHelper::Log::Options();
+	}
 
 	//Get the difficulty we last used, then use it as the default choice
 	if (log.session_size() > 0) {
