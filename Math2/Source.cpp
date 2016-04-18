@@ -98,6 +98,7 @@ int main() {
 	unsigned int difficulty = 1;
 	unsigned int seed = time(NULL);
 
+	google::protobuf::SetLogHandler(NULL);
 	MathHelper::Log& log = *new MathHelper::Log();
 	MathHelper::Log::Session* sesh;
 
@@ -147,7 +148,9 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	//Now check if the user has a log file, then load it for defaults
 	if (doesFileExist(filename)) {
 		fstream in(filename, fstream::in | fstream::binary);
-		log.ParseFromIstream(&in);
+		if (!log.ParseFromIstream(&in)) {
+			log.set_name(name);
+		}
 	} else log.set_name(name);
 
 	//Get the difficulty we last used, then use it as the default choice
@@ -476,6 +479,7 @@ string getCurrTime() {
 	return timeStr;
 }
 
+//TODO: switch from conio to curses
 int getDegreeFromInput(int min, int max, int def) {
 	unsigned char button;
 	unsigned int index = def - min;
