@@ -567,7 +567,7 @@ void drawOptionsMenu(int index, MathHelper::Log::Options& op) {
 		<< (index == 3 ? "< " : "  ") << (op.easymult() ? "ON" : "OFF") << (index == 3 ? " >" : "")
 		<< "\n\n            " << (index == 4 ? "[ " : "  ") << "Save & Exit" << (index == 4 ? " ]" : "  ")
 		<< "    " << (index == 5 ? "[ " : "  ") << "Cancel" << (index == 5 ? " ]" : "  ")
-		<< "\n            " << (char)24 << (char)25 << " - Navigate  " << (char)27 << (char)26 << " - Change";
+		<< "\n\n            " << (char)24 << (char)25 << " - Navigate  " << (char)27 << (char)26 << " - Change";
 }
 
 void quit(MathHelper::Log& log) {
