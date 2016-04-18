@@ -31,6 +31,7 @@ void drawQuestionMenu(int[], string[], int, int, int, int, int, MathOperation*, 
 //Main menu functions
 void help(MathHelper::Log&);
 void options(MathHelper::Log&);
+void drawOptionsMenu(int, MathHelper::Log::Options&);
 void quit(MathHelper::Log&);
 
 //Generic functions
@@ -54,6 +55,7 @@ const map<unsigned char, pair<char*, menuFunction>> menuFunctions = {
 const char * PREVIOUS_FILE = ".previous";
 const unsigned int NUM_ANSWERS = 4; //Reperesents how many answers should be generated and displayed besides NONE OF THE ABOVE
 const unsigned int MAX_TRIES = 3; //How many tries we should give the user before marking the question incorrect
+const unsigned int NUM_OPTIONS = 4; //Number of options in the option menu
 
 //An object which keeps track of our log and writes it to the file when the program exits
 class WriteOnShutdown {
@@ -172,6 +174,7 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	seed = stoi(_seed);
 }
 
+//TODO: Switch from conio to curses
 MathOperation* doMainMenu(char* name, char* filename, MathHelper::Log& log, int difficulty) {
 	unsigned char chosen, maxOption = 'a' + MathOperation::getOperations().size() - 1;
 	unsigned int index = 0, longestOption = 0;
@@ -224,7 +227,7 @@ MathOperation* doMainMenu(char* name, char* filename, MathHelper::Log& log, int 
 						break;
 				}
 				break;
-			case 13:
+			case 13: //ENTER
 				//Select whatever our cursor is currently on
 				if(index < operations.size()) return operations[index];
 				else {
@@ -466,8 +469,105 @@ void help(MathHelper::Log& log) {
 	if(getch() == 3) exit(0);
 }
 
+//TODO: switch from conio to curses
 void options(MathHelper::Log& log) {
-	//TODO: DO THIS
+	system("cls");
+	MathHelper::Log::Options op(log.options());
+
+	int index = 0;
+	while (true) {
+		drawOptionsMenu(index, op);
+		switch (getch()) {
+			case 3: //CTRL-C
+				cout << endl;
+				exit(0);
+				break;
+			case 0:
+			case 224: //ARROW KEYS
+				switch (getch()) {
+					case 72: //UP ARROW
+						if (index == NUM_OPTIONS + 1) index = NUM_OPTIONS - 1;
+						else if (--index < 0) index = NUM_OPTIONS + 1;
+						break;
+					case 80: //DOWN ARROW
+						if (index == NUM_OPTIONS) index = 0;
+						else if (++index > NUM_OPTIONS + 1) index = 0;
+						break;
+					case 75: //LEFT ARROW
+						switch (index) {
+							case 0:
+								if (op.maxtries() > 1) op.set_maxtries(op.maxtries() - 1);
+								break;
+							case 1:
+								if (op.numanswers() > 1 && op.numanswers() > op.maxtries() + 1) op.set_numanswers(op.numanswers() - 1);
+								break;
+							case 2:
+								op.set_remainform(!op.remainform());
+								break;
+							case 3:
+								op.set_easymult(!op.easymult());
+								break;
+							case NUM_OPTIONS:
+								index = NUM_OPTIONS + 1;
+								break;
+							case NUM_OPTIONS + 1:
+								index = NUM_OPTIONS;
+								break;
+						}
+						break;
+					case 77: //RIGHT ARROW
+						switch (index) {
+							case 0:
+								if (op.maxtries() < 9 && op.numanswers() > op.maxtries() + 1) op.set_maxtries(op.maxtries() + 1);
+								break;
+							case 1:
+								if(op.numanswers() < 9) op.set_numanswers(op.numanswers() + 1);
+								break;
+							case 2:
+								op.set_remainform(!op.remainform());
+								break;
+							case 3:
+								op.set_easymult(!op.easymult());
+								break;
+							case NUM_OPTIONS:
+								index = NUM_OPTIONS + 1;
+								break;
+							case NUM_OPTIONS + 1:
+								index = NUM_OPTIONS;
+								break;
+						}
+						break;
+				}
+				break;
+			case 13: //ENTER
+				//If the user has Save and Exit selected, set the user's options to the new ones
+				//Then exit if the user has either Save and Exit selected or Cancel selected
+				if (index == NUM_OPTIONS) {
+					*log.mutable_options() = op;
+					return;
+				} else if (index == NUM_OPTIONS + 1) return;
+				break;
+		}
+	}
+}
+
+void drawOptionsMenu(int index, MathHelper::Log::Options& op) {
+	system("cls");
+	cout << "\n        -----------------------------------------------"
+		<< "\n                  ARITHMETIC PRACTICE PROGRAM"
+		<< "\n                         Options  Menu"
+		<< "\n        -----------------------------------------------\n"
+		<< "\n            Maximum tries                        "
+		<< (index == 0 ? "< " : "  ") << op.maxtries() << (index == 0 ? " >" : "")
+		<< "\n            Number of Answers                    "
+		<< (index == 1 ? "< " : "  ") << op.numanswers() << (index == 1 ? " >" : "")
+		<< "\n            Remainder format         " << (op.remainform() ? "" : "           ")
+		<< (index == 2 ? "< " : "  ") << (op.remainform() ? "Remainder = 5" : "r5") << (index == 2 ? " >" : "")
+		<< "\n            Easy multipliers                   " << (op.easymult() ? " " : "")
+		<< (index == 3 ? "< " : "  ") << (op.easymult() ? "ON" : "OFF") << (index == 3 ? " >" : "")
+		<< "\n\n            " << (index == 4 ? "[ " : "  ") << "Save & Exit" << (index == 4 ? " ]" : "  ")
+		<< "    " << (index == 5 ? "[ " : "  ") << "Cancel" << (index == 5 ? " ]" : "  ")
+		<< "\n            " << (char)24 << (char)25 << " - Navigate  " << (char)27 << (char)26 << " - Change";
 }
 
 void quit(MathHelper::Log& log) {
