@@ -285,7 +285,7 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 		}
 		cout << endl;
 	}
-	cout << "\n                  " << (char)24 << (char)25 << " - navigate   Enter - Select";
+	cout << "\n                  " << (char)24 << (char)25 << " - Navigate   Enter - Select";
 }
 
 void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty) {
@@ -398,7 +398,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	quest->set_correctpercent(correctSum / (double) (sesh->question_size()));
 
 	cout << endl << "        Press anything to continue...";
-	getch();
+	if(getch() == 3) exit(0);
 }
 
 void drawQuestionMenu(int answered[], string answers[], int answerDig, int difficulty, int op1, int op2, int op2Dig, MathOperation* operation, int tries) {
@@ -442,7 +442,22 @@ void drawQuestionMenu(int answered[], string answers[], int answerDig, int diffi
 //MAIN MENU FUNCTIONS
 
 void help(MathHelper::Log& log) {
-	//TODO: DO THIS
+	system("cls");
+	cout << "\n        -----------------------------------------------"
+		<< "\n                  ARITHMETIC PRACTICE PROGRAM"
+		<< "\n                           Help Menu"
+		<< "\n        -----------------------------------------------\n"
+		<< "            Welcome to the help menu. Choose from any\n            of the "
+		<< MathOperation::getOperations().size()
+		<< " operations to be given a math\n            problem based on your current difficulty: "
+		<< log.session().rbegin()->difficulty()
+		<< ".\n            You will be given "
+		<< NUM_ANSWERS + 1
+		<< " multiple choice\n            answers and "
+		<< MAX_TRIES
+		<< " tries to answer it correctly.\n\n            You can change these parameters in the\n            options menu.\n\n            Press anything to continue...";
+	log.set_hasseenhelp(true);
+	if(getch() == 3) exit(0);
 }
 
 void options(MathHelper::Log& log) {
