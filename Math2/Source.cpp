@@ -285,6 +285,7 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 		}
 		cout << endl;
 	}
+	cout << "\n                  " << (char)24 << (char)25 << " - navigate   Enter - Select";
 }
 
 void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty) {
