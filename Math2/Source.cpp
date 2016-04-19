@@ -9,7 +9,6 @@
 #include <Windows.h>
 #pragma comment( lib, "winmm" )
 #elif defined __linux__ || defined __APPLE__
-#include <ncurses.h>
 #else
 #error Platform not supported
 #endif
@@ -25,8 +24,8 @@ using namespace std;
 void getStartInfo(char*, char*, MathHelper::Log&, unsigned int&, unsigned int&);
 MathOperation* doMainMenu(char*, char*, MathHelper::Log&, int);
 void drawMainMenu(char*, MathHelper::Log&, unsigned int, unsigned int);
-void doQuestion(MathOperation*, MathHelper::Log::Session*, int);
-void drawQuestionMenu(int[], string[], int, int, int, int, int, MathOperation*, int);
+void doQuestion(MathOperation*, MathHelper::Log::Session*, int, MathHelper::Log::Options&);
+void drawQuestionMenu(int[], string[], int, int, int, int, int, MathOperation*, int, int, int);
 
 //Main menu functions
 void help(MathHelper::Log&);
@@ -102,9 +101,6 @@ int main() {
 	MathHelper::Log& log = *new MathHelper::Log();
 	MathHelper::Log::Session* sesh;
 
-#ifdef __linux__
-	initscr();
-#endif
 
 	//Let's get the info we need to start the program (name, difficulty, etc.)
 	getStartInfo(name, filename, log, difficulty, seed);
@@ -122,7 +118,7 @@ int main() {
 	//Now enter a loop of the user selecting problems and solving them
 	MathOperation* operation = doMainMenu(name, filename, log, difficulty);
 	while(operation != NULL) {
-		doQuestion(operation, sesh, difficulty);
+		doQuestion(operation, sesh, difficulty, *log.mutable_options());
 		operation = doMainMenu(name, filename, log, difficulty);
 	}
 }
@@ -295,10 +291,9 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 	cout << "\n                  " << (char)24 << (char)25 << " - Navigate   Enter - Select";
 }
 
-void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, const int numAnswers, const int maxTries) {
-	unsigned int op2Dig, op2Max, op1, op2, answer, answerDig;
-	int* answered = new int[numAnswers + 1];
-	answered = { 0 };
+void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, MathHelper::Log::Options& options) {
+	unsigned int op2Dig, op2Max, op1, op2, answer, answerDig, numAnswers = options.numanswers(), maxTries = options.maxtries();
+	int* answered = new int[numAnswers + 1]();
 	string* answers = new string[numAnswers + 1];
 	
 	//The first operand is easy - any number with the number of digits equal to the difficulty
@@ -306,7 +301,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	//The second operand, however, needs to be decided based on the operation being performed
 	//Anything with the TWO_DIG_MULT flag (division and multiplication) will only have 1 or 2 digits, depending on the difficulty
 	//Anything with the SECOND_LTHAN_FIRST flag (division and subtraction) will have to be less than (or equal to) the first
-	op2Dig = (operation->flag & MathOperation::TWO_DIG_MULT) ? difficulty > 3 ? 2 : 1 : difficulty;
+	op2Dig = (operation->flag & MathOperation::TWO_DIG_MULT && options.easymult()) ? difficulty > 3 ? 2 : 1 : difficulty;
 	op2Max = (operation->flag & MathOperation::SECOND_LTHAN_FIRST) ? op1 : 0;
 	op2 = getNumByPlace(op2Dig, op2Max);
 
@@ -321,13 +316,13 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 		if(i == answer) {
 			answers[i] = to_string(operation->op(op1, op2));
 			if(operation->flag & MathOperation::REM_OUT) {
-				answers[i] += " r";
+				answers[i] += (options.remainform() ? " Remainder = " : " r");
 				answers[i] += to_string(op1 % op2);
 			}
 		} else {
 			answers[i] = to_string(getNumByPlace(answerDig));
 			if(operation->flag & MathOperation::REM_OUT) {
-				answers[i] += " r";
+				answers[i] += (options.remainform() ? " Remainder = " : " r");
 				answers[i] += to_string(rand() % op2);
 			}
 		}
@@ -343,13 +338,13 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 	//Every loop, draw the menu and ask user for input
 	int tries = 0;
 	for(; tries < maxTries && !(answered[answer]); tries++) {
-		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries);
+		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries, numAnswers, maxTries);
 		if(tries) playSound(IDR_WAVE2);
 
 		char selection;
 		do {
 			selection = getch();
-			if(selection == 3) exit(0); //CTRL-c
+			if(selection == 3) exit(0); //CTRL-C
 			if (selection < 'A' + numAnswers) selection += 32;
 		} while (selection < 'a' || selection > 'a' + numAnswers || answered[selection - 'a']);
 
@@ -363,7 +358,7 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 		cout << char('a' + answer) << " Correct!";
 		playSound(IDR_WAVE1);
 	} else {
-		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries);
+		drawQuestionMenu(answered, answers, answerDig, difficulty, op1, op2, op2Dig, operation, tries, numAnswers, maxTries);
 		playSound(IDR_WAVE3);
 		for (int i = 0; i < numAnswers + 1; i++) {
 			if (answered[i] == maxTries) {
@@ -449,7 +444,7 @@ void drawQuestionMenu(int answered[], string answers[], int answerDig, int diffi
 		cout << endl;
 	}
 
-	cout << "        Please enter your answer [" << numAnswers - tries << '/' << maxTries << "]: ";
+	cout << "        Please enter your answer [" << maxTries - tries << '/' << maxTries << "]: ";
 }
 
 //MAIN MENU FUNCTIONS
