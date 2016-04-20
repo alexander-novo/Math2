@@ -168,7 +168,7 @@ void protobuf_AddDesc_Math_2eproto() {
     "ssion\030\003 \003(\0132\027.MathHelper.Log.Session\022(\n\007"
     "options\030\004 \002(\0132\027.MathHelper.Log.Options\032\241"
     "\002\n\007Session\022\021\n\tstartTime\030\001 \002(\t\022\014\n\004seed\030\002 "
-    "\002(\005\022\022\n\ndifficulty\030\003 \002(\r\0222\n\010question\030\004 \003("
+    "\002(\r\022\022\n\ndifficulty\030\003 \002(\r\0222\n\010question\030\004 \003("
     "\0132 .MathHelper.Log.Session.Question\022\017\n\007e"
     "ndTime\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004time\030\001 \002(\t\022"
     "\t\n\001x\030\002 \002(\004\022\t\n\001y\030\003 \002(\004\022\021\n\toperation\030\004 \002(\t"
@@ -902,7 +902,7 @@ void Log_Session::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   starttime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  seed_ = 0;
+  seed_ = 0u;
   difficulty_ = 0u;
   endtime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1000,12 +1000,12 @@ bool Log_Session::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 seed = 2;
+      // required uint32 seed = 2;
       case 2: {
         if (tag == 16) {
          parse_seed:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &seed_)));
           set_has_seed();
         } else {
@@ -1099,9 +1099,9 @@ void Log_Session::SerializeWithCachedSizes(
       1, this->starttime(), output);
   }
 
-  // required int32 seed = 2;
+  // required uint32 seed = 2;
   if (has_seed()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->seed(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->seed(), output);
   }
 
   // required uint32 difficulty = 3;
@@ -1146,9 +1146,9 @@ void Log_Session::SerializeWithCachedSizes(
         1, this->starttime(), target);
   }
 
-  // required int32 seed = 2;
+  // required uint32 seed = 2;
   if (has_seed()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->seed(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->seed(), target);
   }
 
   // required uint32 difficulty = 3;
@@ -1193,9 +1193,9 @@ int Log_Session::RequiredFieldsByteSizeFallback() const {
   }
 
   if (has_seed()) {
-    // required int32 seed = 2;
+    // required uint32 seed = 2;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->seed());
   }
 
@@ -1224,9 +1224,9 @@ int Log_Session::ByteSize() const {
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->starttime());
 
-    // required int32 seed = 2;
+    // required uint32 seed = 2;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->seed());
 
     // required uint32 difficulty = 3;
@@ -2481,7 +2481,7 @@ void Log_Session::clear_starttime() {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.startTime)
 }
 
-// required int32 seed = 2;
+// required uint32 seed = 2;
 bool Log_Session::has_seed() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2492,14 +2492,14 @@ void Log_Session::clear_has_seed() {
   _has_bits_[0] &= ~0x00000002u;
 }
 void Log_Session::clear_seed() {
-  seed_ = 0;
+  seed_ = 0u;
   clear_has_seed();
 }
- ::google::protobuf::int32 Log_Session::seed() const {
+ ::google::protobuf::uint32 Log_Session::seed() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.seed)
   return seed_;
 }
- void Log_Session::set_seed(::google::protobuf::int32 value) {
+ void Log_Session::set_seed(::google::protobuf::uint32 value) {
   set_has_seed();
   seed_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.seed)

@@ -15,21 +15,21 @@ class MathOperation {
 		const char* name;
 		const unsigned char _operator;
 
-		const std::function<int(int, int)> op;
+		const std::function<long long(long long, long long)> op;
 	private:
 		static std::vector<MathOperation*> operations;
 	
-		MathOperation(char* a, char b, std::function<int(int, int)> c, unsigned char d = 0x00) : name(a), _operator(b), op(c), flag(d) { MathOperation::operations.push_back(this); }
+		MathOperation(char* a, char b, std::function<long long(long long, long long)> c, unsigned char d = 0x00) : name(a), _operator(b), op(c), flag(d) { MathOperation::operations.push_back(this); }
 
 		//STATIC CONSTRUCTOR
 		static class _init {
 			public:
 				_init() {
-					new MathOperation("Addition", '+', std::plus<int>());
-					new MathOperation("Subtraction", '-', std::minus<int>(), SECOND_LTHAN_FIRST);
-					new MathOperation("Multiplication", 'x', std::multiplies<int>(), TWO_DIG_MULT); 
+					new MathOperation("Addition", '+', std::plus<long long>());
+					new MathOperation("Subtraction", '-', std::minus<long long>(), SECOND_LTHAN_FIRST);
+					new MathOperation("Multiplication", 'x', std::multiplies<long long>(), TWO_DIG_MULT);
 					//http://stackoverflow.com/a/15486664
-					new MathOperation("Division", 246u, std::divides<int>(), TWO_DIG_MULT | REM_OUT | SECOND_LTHAN_FIRST);
+					new MathOperation("Division", 246u, std::divides<long long>(), TWO_DIG_MULT | REM_OUT | SECOND_LTHAN_FIRST);
 				}
 		} _initialise;
 };

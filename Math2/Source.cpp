@@ -1,21 +1,22 @@
 #include <fstream>
 #include <iostream>
+#include <random>
 #include <regex>
 #include <sys/stat.h> //To check if file exists
 #include <time.h>
+
 #include <google/protobuf/util/message_differencer.h> //To compare messages
 
 #ifdef _WIN32
 #define NOMINMAX //For windows.h and protobuf to play nicely
 #include <conio.h>
 #include <Windows.h>
+#include "resource1.h"
 #pragma comment( lib, "winmm" )
 //#elif defined __linux__ || defined __APPLE__
 #else
 #error Platform not supported
 #endif
-
-#include "resource1.h"
 
 #include "Math.pb.h"
 #include "MathOperation.h"
@@ -26,7 +27,7 @@ using namespace std;
 void getStartInfo(char*, char*, MathHelper::Log&, unsigned int&, unsigned int&);
 MathOperation* doMainMenu(char*, char*, MathHelper::Log&, int);
 void drawMainMenu(char*, MathHelper::Log&, unsigned int, unsigned int);
-void doQuestion(MathOperation*, MathHelper::Log::Session*, int, MathHelper::Log::Options&);
+void doQuestion(MathOperation*, MathHelper::Log::Session*, int, MathHelper::Log::Options&, mt19937_64&);
 void drawQuestionMenu(int[], string[], int, int, int, int, int, MathOperation*, int, int, int);
 
 //Main menu functions
@@ -38,7 +39,7 @@ void quit(MathHelper::Log&);
 //Generic functions
 string getCurrTime();
 int getDegreeFromInput(int, int, int);
-unsigned long long getNumByPlace(unsigned int, unsigned int = 0);
+unsigned long long getNumByPlace(mt19937_64&, unsigned int, unsigned long long = 0);
 void getStrFromInput(std::regex, char*);
 bool doesFileExist(const char*);
 
@@ -116,7 +117,13 @@ int main() {
 	char name[100];
 	char* filename = new char[100];
 	unsigned int difficulty = 1;
-	unsigned int seed = time(NULL);
+
+	//We determine the seed using a random device
+	//Random device's implementation varies by platform and may not actually be random
+	//So if entropy is 0, then we should use the time instead
+	random_device rd;
+	unsigned int seed = rd.entropy() ? rd() : time(NULL);
+	mt19937_64 rng(seed);
 
 	google::protobuf::SetLogHandler(NULL);
 	MathHelper::Log& log = *new MathHelper::Log();
@@ -131,7 +138,6 @@ int main() {
 	sesh->set_starttime(getCurrTime());
 	sesh->set_seed(seed);
 	sesh->set_difficulty(difficulty);
-	srand(seed);
 
 	//When we exit the program, write our log to the output files
 	static WriteOnShutdown write(filename, log);
@@ -139,7 +145,7 @@ int main() {
 	//Now enter a loop of the user selecting problems and solving them
 	MathOperation* operation = doMainMenu(name, filename, log, difficulty);
 	while(operation != NULL) {
-		doQuestion(operation, sesh, difficulty, *log.mutable_options());
+		doQuestion(operation, sesh, difficulty, *log.mutable_options(), rng);
 		operation = doMainMenu(name, filename, log, difficulty);
 	}
 }
@@ -186,7 +192,7 @@ void getStartInfo(char* name, char* filename, MathHelper::Log& log, unsigned int
 	cout << "  Seed: ";
 	string _seed = to_string(seed);
 	getStrFromInput(regex("^[[:digit:]]*$"), &_seed.front());
-	seed = stoi(_seed);
+	seed = stoul(_seed);
 }
 
 //TODO: Switch from conio to curses
@@ -312,23 +318,24 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 	cout << "\n                  " << (char)24 << (char)25 << " - Navigate   Enter - Select";
 }
 
-void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, MathHelper::Log::Options& options) {
+void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, MathHelper::Log::Options& options, mt19937_64& rng) {
 	unsigned int op2Dig, op2Max, answerDig, numAnswers = options.numanswers(), maxTries = options.maxtries();
 	long long op1, op2, answer;
 	int* answered = new int[numAnswers + 1]();
 	string* answers = new string[numAnswers + 1];
 	
 	//The first operand is easy - any number with the number of digits equal to the difficulty
-	op1 = getNumByPlace(difficulty);
+	op1 = getNumByPlace(rng, difficulty);
 	//The second operand, however, needs to be decided based on the operation being performed
 	//Anything with the TWO_DIG_MULT flag (division and multiplication) will only have 1 or 2 digits, depending on the difficulty
 	//Anything with the SECOND_LTHAN_FIRST flag (division and subtraction) will have to be less than (or equal to) the first
 	op2Dig = (operation->flag & MathOperation::TWO_DIG_MULT && options.easymult()) ? difficulty > 3 ? 2 : 1 : difficulty;
 	op2Max = (operation->flag & MathOperation::SECOND_LTHAN_FIRST) ? op1 : 0;
-	op2 = getNumByPlace(op2Dig, op2Max);
+	op2 = getNumByPlace(rng, op2Dig, op2Max);
 
 	//Now we choose which of the answers are correct
-	answer = rand() % (numAnswers + 1);
+	uniform_int_distribution<unsigned int> answerDist(0, numAnswers);
+	answer = answerDist(rng);
 
 	//Calculate how many digits the answer will have, so we can make similar dummy answers
 	answerDig = (operation->op(op1, op2) ? log10(operation->op(op1, op2)) + 1 : 1);
@@ -342,10 +349,12 @@ void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int di
 				answers[i] += to_string(op1 % op2);
 			}
 		} else {
-			answers[i] = to_string(getNumByPlace(answerDig));
+			answers[i] = to_string(getNumByPlace(rng, answerDig));
 			if(operation->flag & MathOperation::REM_OUT) {
 				answers[i] += (options.remainform() ? " Remainder = " : " r");
-				answers[i] += to_string(rand() % op2);
+
+				uniform_int_distribution<unsigned int> remainDist(0, op2 - 1);
+				answers[i] += to_string(remainDist(rng));
 			}
 		}
 		for(int j = 0; j < i; j++) {
@@ -657,25 +666,15 @@ int getDegreeFromInput(int min, int max, int def) {
 	}
 }
 
-unsigned long long getNumByPlace(unsigned int place, unsigned long long _max) {
-	unsigned long long max = RAND_MAX;
-	unsigned long long num = rand();
-
-	unsigned long long digMin = pow(10, place - 1) - 1; //9,999
+unsigned long long getNumByPlace(mt19937_64& rng, unsigned int place, unsigned long long _max) {
+	//Determine our minimum and maximum numbers base on digits (examples shown are 5 digits)
+	unsigned long long digMin = pow(10, place - 1); //10,000
 	unsigned long long digMax = pow(10, place) - 1; //99,999
 
 	if (_max >= digMin && _max < digMax && _max != 0) digMax = _max;
 
-	while(digMax > max) {
-		int num2 = rand();
-		num = num2 * (max + 1) + num;
-		max = RAND_MAX * (max + 1);
-	}
-
-	double ranD = ((double) num) / max; //Random number between 0 and 1
-	return ranD * (digMax - digMin - 1) + digMin + 1;
-	//     1    * (99,999 - 9,999  - 1) + 9,999  + 1 = 99,999
-	//     0    * (99,999 - 9,999  - 1) + 9,999  + 1 = 10,000
+	uniform_int_distribution<unsigned long long> dist(digMin, digMax);
+	return dist(rng);
 }
 
 void getStrFromInput(regex reg, char* buf) {

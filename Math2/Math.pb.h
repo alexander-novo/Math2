@@ -318,12 +318,12 @@ class Log_Session : public ::google::protobuf::Message {
   ::std::string* release_starttime();
   void set_allocated_starttime(::std::string* starttime);
 
-  // required int32 seed = 2;
+  // required uint32 seed = 2;
   bool has_seed() const;
   void clear_seed();
   static const int kSeedFieldNumber = 2;
-  ::google::protobuf::int32 seed() const;
-  void set_seed(::google::protobuf::int32 value);
+  ::google::protobuf::uint32 seed() const;
+  void set_seed(::google::protobuf::uint32 value);
 
   // required uint32 difficulty = 3;
   bool has_difficulty() const;
@@ -374,7 +374,7 @@ class Log_Session : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr starttime_;
-  ::google::protobuf::int32 seed_;
+  ::google::protobuf::uint32 seed_;
   ::google::protobuf::uint32 difficulty_;
   ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session_Question > question_;
   ::google::protobuf::internal::ArenaStringPtr endtime_;
@@ -1043,7 +1043,7 @@ inline void Log_Session::set_allocated_starttime(::std::string* starttime) {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.startTime)
 }
 
-// required int32 seed = 2;
+// required uint32 seed = 2;
 inline bool Log_Session::has_seed() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1054,14 +1054,14 @@ inline void Log_Session::clear_has_seed() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void Log_Session::clear_seed() {
-  seed_ = 0;
+  seed_ = 0u;
   clear_has_seed();
 }
-inline ::google::protobuf::int32 Log_Session::seed() const {
+inline ::google::protobuf::uint32 Log_Session::seed() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.seed)
   return seed_;
 }
-inline void Log_Session::set_seed(::google::protobuf::int32 value) {
+inline void Log_Session::set_seed(::google::protobuf::uint32 value) {
   set_has_seed();
   seed_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.seed)

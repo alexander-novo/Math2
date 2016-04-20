@@ -7,7 +7,7 @@ message Log {
 
 	message Session {
 		required string startTime = 1;
-		required int32 seed = 2;
+		required uint32 seed = 2;
 		required uint32 difficulty = 3;
 
 		message Question {
