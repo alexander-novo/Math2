@@ -3,12 +3,14 @@
 #include <regex>
 #include <sys/stat.h> //To check if file exists
 #include <time.h>
+#include <google/protobuf/util/message_differencer.h> //To compare messages
 
 #ifdef _WIN32
+#define NOMINMAX //For windows.h and protobuf to play nicely
 #include <conio.h>
 #include <Windows.h>
 #pragma comment( lib, "winmm" )
-#elif defined __linux__ || defined __APPLE__
+//#elif defined __linux__ || defined __APPLE__
 #else
 #error Platform not supported
 #endif
@@ -65,12 +67,31 @@ class WriteOnShutdown {
 			//If a session exists, set the last session's end time to now
 			if(message.session_size()) message.mutable_session() -> rbegin() -> set_endtime(getCurrTime());
 
-			//Write to the main file
+			MathHelper::Log prev;
+
+			//Check if we've got a previous log for this user
+			//Load it into prev if we do
+			bool init = false;
+			if (doesFileExist(filename)) {
+				fstream in(filename, fstream::in | fstream::binary);
+				init = prev.ParseFromIstream(&in);
+				in.close();
+			}
+
+			//If it was loaded successfully, change the options to the most recent options and add our last session
 			fstream output(filename, fstream::out | fstream::trunc | fstream::binary);
+			if (init) {
+				*prev.mutable_options() = *message.mutable_options();
+				*prev.add_session() = *message.session().rbegin();
+				message = prev;
+			}
+
+			//Write to the main file
 			if (!message.IsInitialized() || !message.SerializeToOstream(&output)) {
 				cout << "Error writing output file." << endl;
 				return;
 			}
+
 			output.close();
 
 			//Then write the username to the PREVIOUS_FILE
