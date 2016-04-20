@@ -38,7 +38,7 @@ void quit(MathHelper::Log&);
 //Generic functions
 string getCurrTime();
 int getDegreeFromInput(int, int, int);
-unsigned int getNumByPlace(unsigned int, unsigned int = 0);
+unsigned long long getNumByPlace(unsigned int, unsigned int = 0);
 void getStrFromInput(std::regex, char*);
 bool doesFileExist(const char*);
 
@@ -313,7 +313,8 @@ void drawMainMenu(char* name, MathHelper::Log& log, unsigned int index, unsigned
 }
 
 void doQuestion(MathOperation* operation, MathHelper::Log::Session* sesh, int difficulty, MathHelper::Log::Options& options) {
-	unsigned int op2Dig, op2Max, op1, op2, answer, answerDig, numAnswers = options.numanswers(), maxTries = options.maxtries();
+	unsigned int op2Dig, op2Max, answerDig, numAnswers = options.numanswers(), maxTries = options.maxtries();
+	long long op1, op2, answer;
 	int* answered = new int[numAnswers + 1]();
 	string* answers = new string[numAnswers + 1];
 	
@@ -594,6 +595,8 @@ void quit(MathHelper::Log& log) {
 	exit(0);
 }
 
+//GENERIC FUNCTIONS
+
 string getCurrTime() {
 	char timeStr[100];
 	time_t currTime = time(NULL);
@@ -654,12 +657,12 @@ int getDegreeFromInput(int min, int max, int def) {
 	}
 }
 
-unsigned int getNumByPlace(unsigned int place, unsigned int _max) {
-	int max = RAND_MAX;
-	int num = rand();
+unsigned long long getNumByPlace(unsigned int place, unsigned long long _max) {
+	unsigned long long max = RAND_MAX;
+	unsigned long long num = rand();
 
-	int digMin = pow(10, place - 1) - 1; //9,999
-	int digMax = pow(10, place) - 1; //99,999
+	unsigned long long digMin = pow(10, place - 1) - 1; //9,999
+	unsigned long long digMax = pow(10, place) - 1; //99,999
 
 	if (_max >= digMin && _max < digMax && _max != 0) digMax = _max;
 
@@ -735,8 +738,8 @@ bool doesFileExist(const char* fileName) {
 	return (stat(fileName, &buf) == 0);
 }
 
-#ifdef _WIN32
 void playSound(int res) {
+#ifdef _WIN32
 	HANDLE found, sound;
 	LPVOID data;
 
@@ -746,5 +749,5 @@ void playSound(int res) {
 	sndPlaySound((LPCWSTR) data, SND_ASYNC | SND_MEMORY);
 	UnlockResource(sound);
 	FreeResource(found);
-}
 #endif
+}

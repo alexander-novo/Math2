@@ -119,19 +119,19 @@ class Log_Session_Question : public ::google::protobuf::Message {
   ::std::string* release_time();
   void set_allocated_time(::std::string* time);
 
-  // required int32 x = 2;
+  // required uint64 x = 2;
   bool has_x() const;
   void clear_x();
   static const int kXFieldNumber = 2;
-  ::google::protobuf::int32 x() const;
-  void set_x(::google::protobuf::int32 value);
+  ::google::protobuf::uint64 x() const;
+  void set_x(::google::protobuf::uint64 value);
 
-  // required int32 y = 3;
+  // required uint64 y = 3;
   bool has_y() const;
   void clear_y();
   static const int kYFieldNumber = 3;
-  ::google::protobuf::int32 y() const;
-  void set_y(::google::protobuf::int32 value);
+  ::google::protobuf::uint64 y() const;
+  void set_y(::google::protobuf::uint64 value);
 
   // required string operation = 4;
   bool has_operation() const;
@@ -173,16 +173,16 @@ class Log_Session_Question : public ::google::protobuf::Message {
   ::std::string* release_answer();
   void set_allocated_answer(::std::string* answer);
 
-  // repeated int32 attempt = 7;
+  // repeated uint32 attempt = 7;
   int attempt_size() const;
   void clear_attempt();
   static const int kAttemptFieldNumber = 7;
-  ::google::protobuf::int32 attempt(int index) const;
-  void set_attempt(int index, ::google::protobuf::int32 value);
-  void add_attempt(::google::protobuf::int32 value);
-  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+  ::google::protobuf::uint32 attempt(int index) const;
+  void set_attempt(int index, ::google::protobuf::uint32 value);
+  void add_attempt(::google::protobuf::uint32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
       attempt() const;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_attempt();
 
   // required bool correct = 8;
@@ -223,12 +223,12 @@ class Log_Session_Question : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr time_;
-  ::google::protobuf::int32 x_;
-  ::google::protobuf::int32 y_;
+  ::google::protobuf::uint64 x_;
+  ::google::protobuf::uint64 y_;
   ::google::protobuf::internal::ArenaStringPtr operation_;
   ::google::protobuf::RepeatedPtrField< ::std::string> option_;
   ::google::protobuf::internal::ArenaStringPtr answer_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > attempt_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > attempt_;
   double correctpercent_;
   bool correct_;
   friend void  protobuf_AddDesc_Math_2eproto();
@@ -325,12 +325,12 @@ class Log_Session : public ::google::protobuf::Message {
   ::google::protobuf::int32 seed() const;
   void set_seed(::google::protobuf::int32 value);
 
-  // required int32 difficulty = 3;
+  // required uint32 difficulty = 3;
   bool has_difficulty() const;
   void clear_difficulty();
   static const int kDifficultyFieldNumber = 3;
-  ::google::protobuf::int32 difficulty() const;
-  void set_difficulty(::google::protobuf::int32 value);
+  ::google::protobuf::uint32 difficulty() const;
+  void set_difficulty(::google::protobuf::uint32 value);
 
   // repeated .MathHelper.Log.Session.Question question = 4;
   int question_size() const;
@@ -375,7 +375,7 @@ class Log_Session : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr starttime_;
   ::google::protobuf::int32 seed_;
-  ::google::protobuf::int32 difficulty_;
+  ::google::protobuf::uint32 difficulty_;
   ::google::protobuf::RepeatedPtrField< ::MathHelper::Log_Session_Question > question_;
   ::google::protobuf::internal::ArenaStringPtr endtime_;
   friend void  protobuf_AddDesc_Math_2eproto();
@@ -451,19 +451,19 @@ class Log_Options : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 maxTries = 1 [default = 3];
+  // optional uint32 maxTries = 1 [default = 3];
   bool has_maxtries() const;
   void clear_maxtries();
   static const int kMaxTriesFieldNumber = 1;
-  ::google::protobuf::int32 maxtries() const;
-  void set_maxtries(::google::protobuf::int32 value);
+  ::google::protobuf::uint32 maxtries() const;
+  void set_maxtries(::google::protobuf::uint32 value);
 
-  // optional int32 numAnswers = 2 [default = 4];
+  // optional uint32 numAnswers = 2 [default = 4];
   bool has_numanswers() const;
   void clear_numanswers();
   static const int kNumAnswersFieldNumber = 2;
-  ::google::protobuf::int32 numanswers() const;
-  void set_numanswers(::google::protobuf::int32 value);
+  ::google::protobuf::uint32 numanswers() const;
+  void set_numanswers(::google::protobuf::uint32 value);
 
   // optional bool remainForm = 3 [default = false];
   bool has_remainform() const;
@@ -493,8 +493,8 @@ class Log_Options : public ::google::protobuf::Message {
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::int32 maxtries_;
-  ::google::protobuf::int32 numanswers_;
+  ::google::protobuf::uint32 maxtries_;
+  ::google::protobuf::uint32 numanswers_;
   bool remainform_;
   bool easymult_;
   friend void  protobuf_AddDesc_Math_2eproto();
@@ -700,7 +700,7 @@ inline void Log_Session_Question::set_allocated_time(::std::string* time) {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.Question.time)
 }
 
-// required int32 x = 2;
+// required uint64 x = 2;
 inline bool Log_Session_Question::has_x() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -711,20 +711,20 @@ inline void Log_Session_Question::clear_has_x() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void Log_Session_Question::clear_x() {
-  x_ = 0;
+  x_ = GOOGLE_ULONGLONG(0);
   clear_has_x();
 }
-inline ::google::protobuf::int32 Log_Session_Question::x() const {
+inline ::google::protobuf::uint64 Log_Session_Question::x() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.x)
   return x_;
 }
-inline void Log_Session_Question::set_x(::google::protobuf::int32 value) {
+inline void Log_Session_Question::set_x(::google::protobuf::uint64 value) {
   set_has_x();
   x_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.x)
 }
 
-// required int32 y = 3;
+// required uint64 y = 3;
 inline bool Log_Session_Question::has_y() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -735,14 +735,14 @@ inline void Log_Session_Question::clear_has_y() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void Log_Session_Question::clear_y() {
-  y_ = 0;
+  y_ = GOOGLE_ULONGLONG(0);
   clear_has_y();
 }
-inline ::google::protobuf::int32 Log_Session_Question::y() const {
+inline ::google::protobuf::uint64 Log_Session_Question::y() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.y)
   return y_;
 }
-inline void Log_Session_Question::set_y(::google::protobuf::int32 value) {
+inline void Log_Session_Question::set_y(::google::protobuf::uint64 value) {
   set_has_y();
   y_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.y)
@@ -908,31 +908,31 @@ inline void Log_Session_Question::set_allocated_answer(::std::string* answer) {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.Question.answer)
 }
 
-// repeated int32 attempt = 7;
+// repeated uint32 attempt = 7;
 inline int Log_Session_Question::attempt_size() const {
   return attempt_.size();
 }
 inline void Log_Session_Question::clear_attempt() {
   attempt_.Clear();
 }
-inline ::google::protobuf::int32 Log_Session_Question::attempt(int index) const {
+inline ::google::protobuf::uint32 Log_Session_Question::attempt(int index) const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.attempt)
   return attempt_.Get(index);
 }
-inline void Log_Session_Question::set_attempt(int index, ::google::protobuf::int32 value) {
+inline void Log_Session_Question::set_attempt(int index, ::google::protobuf::uint32 value) {
   attempt_.Set(index, value);
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.attempt)
 }
-inline void Log_Session_Question::add_attempt(::google::protobuf::int32 value) {
+inline void Log_Session_Question::add_attempt(::google::protobuf::uint32 value) {
   attempt_.Add(value);
   // @@protoc_insertion_point(field_add:MathHelper.Log.Session.Question.attempt)
 }
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
 Log_Session_Question::attempt() const {
   // @@protoc_insertion_point(field_list:MathHelper.Log.Session.Question.attempt)
   return attempt_;
 }
-inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 Log_Session_Question::mutable_attempt() {
   // @@protoc_insertion_point(field_mutable_list:MathHelper.Log.Session.Question.attempt)
   return &attempt_;
@@ -1067,7 +1067,7 @@ inline void Log_Session::set_seed(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.seed)
 }
 
-// required int32 difficulty = 3;
+// required uint32 difficulty = 3;
 inline bool Log_Session::has_difficulty() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1078,14 +1078,14 @@ inline void Log_Session::clear_has_difficulty() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void Log_Session::clear_difficulty() {
-  difficulty_ = 0;
+  difficulty_ = 0u;
   clear_has_difficulty();
 }
-inline ::google::protobuf::int32 Log_Session::difficulty() const {
+inline ::google::protobuf::uint32 Log_Session::difficulty() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.difficulty)
   return difficulty_;
 }
-inline void Log_Session::set_difficulty(::google::protobuf::int32 value) {
+inline void Log_Session::set_difficulty(::google::protobuf::uint32 value) {
   set_has_difficulty();
   difficulty_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.difficulty)
@@ -1178,7 +1178,7 @@ inline void Log_Session::set_allocated_endtime(::std::string* endtime) {
 
 // Log_Options
 
-// optional int32 maxTries = 1 [default = 3];
+// optional uint32 maxTries = 1 [default = 3];
 inline bool Log_Options::has_maxtries() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1189,20 +1189,20 @@ inline void Log_Options::clear_has_maxtries() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void Log_Options::clear_maxtries() {
-  maxtries_ = 3;
+  maxtries_ = 3u;
   clear_has_maxtries();
 }
-inline ::google::protobuf::int32 Log_Options::maxtries() const {
+inline ::google::protobuf::uint32 Log_Options::maxtries() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Options.maxTries)
   return maxtries_;
 }
-inline void Log_Options::set_maxtries(::google::protobuf::int32 value) {
+inline void Log_Options::set_maxtries(::google::protobuf::uint32 value) {
   set_has_maxtries();
   maxtries_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Options.maxTries)
 }
 
-// optional int32 numAnswers = 2 [default = 4];
+// optional uint32 numAnswers = 2 [default = 4];
 inline bool Log_Options::has_numanswers() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1213,14 +1213,14 @@ inline void Log_Options::clear_has_numanswers() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void Log_Options::clear_numanswers() {
-  numanswers_ = 4;
+  numanswers_ = 4u;
   clear_has_numanswers();
 }
-inline ::google::protobuf::int32 Log_Options::numanswers() const {
+inline ::google::protobuf::uint32 Log_Options::numanswers() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Options.numAnswers)
   return numanswers_;
 }
-inline void Log_Options::set_numanswers(::google::protobuf::int32 value) {
+inline void Log_Options::set_numanswers(::google::protobuf::uint32 value) {
   set_has_numanswers();
   numanswers_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Options.numAnswers)

@@ -1,3 +1,4 @@
+syntax = "proto2";
 package MathHelper;
 
 message Log {
@@ -7,20 +8,20 @@ message Log {
 	message Session {
 		required string startTime = 1;
 		required int32 seed = 2;
-		required int32 difficulty = 3;
+		required uint32 difficulty = 3;
 
 		message Question {
 			required string time = 1;
 
-			required int32 x = 2;
-			required int32 y = 3;
+			required uint64 x = 2;
+			required uint64 y = 3;
 
 			required string operation = 4;
 
 			repeated string option = 5;
 
 			required string answer = 6;
-			repeated int32 attempt = 7;
+			repeated uint32 attempt = 7;
 			required bool correct = 8;
 			required double correctPercent = 9;
 
@@ -33,8 +34,8 @@ message Log {
 	repeated Session session = 3;
 
 	message Options {
-		optional int32 maxTries = 1 [default = 3];
-		optional int32 numAnswers = 2 [default = 4];
+		optional uint32 maxTries = 1 [default = 3];
+		optional uint32 numAnswers = 2 [default = 4];
 		optional bool remainForm = 3 [default = false];
 		optional bool easyMult = 4 [default = true];
 	}

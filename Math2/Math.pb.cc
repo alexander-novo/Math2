@@ -168,14 +168,14 @@ void protobuf_AddDesc_Math_2eproto() {
     "ssion\030\003 \003(\0132\027.MathHelper.Log.Session\022(\n\007"
     "options\030\004 \002(\0132\027.MathHelper.Log.Options\032\241"
     "\002\n\007Session\022\021\n\tstartTime\030\001 \002(\t\022\014\n\004seed\030\002 "
-    "\002(\005\022\022\n\ndifficulty\030\003 \002(\005\0222\n\010question\030\004 \003("
+    "\002(\005\022\022\n\ndifficulty\030\003 \002(\r\0222\n\010question\030\004 \003("
     "\0132 .MathHelper.Log.Session.Question\022\017\n\007e"
     "ndTime\030\005 \002(\t\032\233\001\n\010Question\022\014\n\004time\030\001 \002(\t\022"
-    "\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\toperation\030\004 \002(\t"
+    "\t\n\001x\030\002 \002(\004\022\t\n\001y\030\003 \002(\004\022\021\n\toperation\030\004 \002(\t"
     "\022\016\n\006option\030\005 \003(\t\022\016\n\006answer\030\006 \002(\t\022\017\n\007atte"
-    "mpt\030\007 \003(\005\022\017\n\007correct\030\010 \002(\010\022\026\n\016correctPer"
-    "cent\030\t \002(\001\032h\n\007Options\022\023\n\010maxTries\030\001 \001(\005:"
-    "\0013\022\025\n\nnumAnswers\030\002 \001(\005:\0014\022\031\n\nremainForm\030"
+    "mpt\030\007 \003(\r\022\017\n\007correct\030\010 \002(\010\022\026\n\016correctPer"
+    "cent\030\t \002(\001\032h\n\007Options\022\023\n\010maxTries\030\001 \001(\r:"
+    "\0013\022\025\n\nnumAnswers\030\002 \001(\r:\0014\022\031\n\nremainForm\030"
     "\003 \001(\010:\005false\022\026\n\010easyMult\030\004 \001(\010:\004true", 556);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Math.proto", &protobuf_RegisterTypes);
@@ -242,8 +242,8 @@ void Log_Session_Question::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   time_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  x_ = 0;
-  y_ = 0;
+  x_ = GOOGLE_ULONGLONG(0);
+  y_ = GOOGLE_ULONGLONG(0);
   operation_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   answer_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   correct_ = false;
@@ -350,12 +350,12 @@ bool Log_Session_Question::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 x = 2;
+      // required uint64 x = 2;
       case 2: {
         if (tag == 16) {
          parse_x:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &x_)));
           set_has_x();
         } else {
@@ -365,12 +365,12 @@ bool Log_Session_Question::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 y = 3;
+      // required uint64 y = 3;
       case 3: {
         if (tag == 24) {
          parse_y:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &y_)));
           set_has_y();
         } else {
@@ -433,16 +433,16 @@ bool Log_Session_Question::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 attempt = 7;
+      // repeated uint32 attempt = 7;
       case 7: {
         if (tag == 56) {
          parse_attempt:
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 56, input, this->mutable_attempt())));
         } else if (tag == 58) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_attempt())));
         } else {
           goto handle_unusual;
@@ -517,14 +517,14 @@ void Log_Session_Question::SerializeWithCachedSizes(
       1, this->time(), output);
   }
 
-  // required int32 x = 2;
+  // required uint64 x = 2;
   if (has_x()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->x(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->x(), output);
   }
 
-  // required int32 y = 3;
+  // required uint64 y = 3;
   if (has_y()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->y(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->y(), output);
   }
 
   // required string operation = 4;
@@ -557,9 +557,9 @@ void Log_Session_Question::SerializeWithCachedSizes(
       6, this->answer(), output);
   }
 
-  // repeated int32 attempt = 7;
+  // repeated uint32 attempt = 7;
   for (int i = 0; i < this->attempt_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(
       7, this->attempt(i), output);
   }
 
@@ -594,14 +594,14 @@ void Log_Session_Question::SerializeWithCachedSizes(
         1, this->time(), target);
   }
 
-  // required int32 x = 2;
+  // required uint64 x = 2;
   if (has_x()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->x(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->x(), target);
   }
 
-  // required int32 y = 3;
+  // required uint64 y = 3;
   if (has_y()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->y(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->y(), target);
   }
 
   // required string operation = 4;
@@ -636,10 +636,10 @@ void Log_Session_Question::SerializeWithCachedSizes(
         6, this->answer(), target);
   }
 
-  // repeated int32 attempt = 7;
+  // repeated uint32 attempt = 7;
   for (int i = 0; i < this->attempt_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32ToArray(7, this->attempt(i), target);
+      WriteUInt32ToArray(7, this->attempt(i), target);
   }
 
   // required bool correct = 8;
@@ -671,16 +671,16 @@ int Log_Session_Question::RequiredFieldsByteSizeFallback() const {
   }
 
   if (has_x()) {
-    // required int32 x = 2;
+    // required uint64 x = 2;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->x());
   }
 
   if (has_y()) {
-    // required int32 y = 3;
+    // required uint64 y = 3;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->y());
   }
 
@@ -719,14 +719,14 @@ int Log_Session_Question::ByteSize() const {
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->time());
 
-    // required int32 x = 2;
+    // required uint64 x = 2;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->x());
 
-    // required int32 y = 3;
+    // required uint64 y = 3;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->y());
 
     // required string operation = 4;
@@ -755,12 +755,12 @@ int Log_Session_Question::ByteSize() const {
       this->option(i));
   }
 
-  // repeated int32 attempt = 7;
+  // repeated uint32 attempt = 7;
   {
     int data_size = 0;
     for (int i = 0; i < this->attempt_size(); i++) {
       data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->attempt(i));
+        UInt32Size(this->attempt(i));
     }
     total_size += 1 * this->attempt_size() + data_size;
   }
@@ -903,7 +903,7 @@ void Log_Session::SharedCtor() {
   _cached_size_ = 0;
   starttime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   seed_ = 0;
-  difficulty_ = 0;
+  difficulty_ = 0u;
   endtime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1015,12 +1015,12 @@ bool Log_Session::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 difficulty = 3;
+      // required uint32 difficulty = 3;
       case 3: {
         if (tag == 24) {
          parse_difficulty:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &difficulty_)));
           set_has_difficulty();
         } else {
@@ -1104,9 +1104,9 @@ void Log_Session::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->seed(), output);
   }
 
-  // required int32 difficulty = 3;
+  // required uint32 difficulty = 3;
   if (has_difficulty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->difficulty(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->difficulty(), output);
   }
 
   // repeated .MathHelper.Log.Session.Question question = 4;
@@ -1151,9 +1151,9 @@ void Log_Session::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->seed(), target);
   }
 
-  // required int32 difficulty = 3;
+  // required uint32 difficulty = 3;
   if (has_difficulty()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->difficulty(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->difficulty(), target);
   }
 
   // repeated .MathHelper.Log.Session.Question question = 4;
@@ -1200,9 +1200,9 @@ int Log_Session::RequiredFieldsByteSizeFallback() const {
   }
 
   if (has_difficulty()) {
-    // required int32 difficulty = 3;
+    // required uint32 difficulty = 3;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->difficulty());
   }
 
@@ -1229,9 +1229,9 @@ int Log_Session::ByteSize() const {
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->seed());
 
-    // required int32 difficulty = 3;
+    // required uint32 difficulty = 3;
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->difficulty());
 
     // required string endTime = 5;
@@ -1368,8 +1368,8 @@ Log_Options::Log_Options(const Log_Options& from)
 
 void Log_Options::SharedCtor() {
   _cached_size_ = 0;
-  maxtries_ = 3;
-  numanswers_ = 4;
+  maxtries_ = 3u;
+  numanswers_ = 4u;
   remainform_ = false;
   easymult_ = true;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1412,8 +1412,8 @@ Log_Options* Log_Options::New(::google::protobuf::Arena* arena) const {
 
 void Log_Options::Clear() {
   if (_has_bits_[0 / 32] & 15u) {
-    maxtries_ = 3;
-    numanswers_ = 4;
+    maxtries_ = 3u;
+    numanswers_ = 4u;
     remainform_ = false;
     easymult_ = true;
   }
@@ -1433,11 +1433,11 @@ bool Log_Options::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 maxTries = 1 [default = 3];
+      // optional uint32 maxTries = 1 [default = 3];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &maxtries_)));
           set_has_maxtries();
         } else {
@@ -1447,12 +1447,12 @@ bool Log_Options::MergePartialFromCodedStream(
         break;
       }
 
-      // optional int32 numAnswers = 2 [default = 4];
+      // optional uint32 numAnswers = 2 [default = 4];
       case 2: {
         if (tag == 16) {
          parse_numAnswers:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &numanswers_)));
           set_has_numanswers();
         } else {
@@ -1517,14 +1517,14 @@ failure:
 void Log_Options::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:MathHelper.Log.Options)
-  // optional int32 maxTries = 1 [default = 3];
+  // optional uint32 maxTries = 1 [default = 3];
   if (has_maxtries()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->maxtries(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->maxtries(), output);
   }
 
-  // optional int32 numAnswers = 2 [default = 4];
+  // optional uint32 numAnswers = 2 [default = 4];
   if (has_numanswers()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->numanswers(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->numanswers(), output);
   }
 
   // optional bool remainForm = 3 [default = false];
@@ -1547,14 +1547,14 @@ void Log_Options::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Log_Options::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:MathHelper.Log.Options)
-  // optional int32 maxTries = 1 [default = 3];
+  // optional uint32 maxTries = 1 [default = 3];
   if (has_maxtries()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->maxtries(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->maxtries(), target);
   }
 
-  // optional int32 numAnswers = 2 [default = 4];
+  // optional uint32 numAnswers = 2 [default = 4];
   if (has_numanswers()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->numanswers(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->numanswers(), target);
   }
 
   // optional bool remainForm = 3 [default = false];
@@ -1579,17 +1579,17 @@ int Log_Options::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & 15u) {
-    // optional int32 maxTries = 1 [default = 3];
+    // optional uint32 maxTries = 1 [default = 3];
     if (has_maxtries()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->maxtries());
     }
 
-    // optional int32 numAnswers = 2 [default = 4];
+    // optional uint32 numAnswers = 2 [default = 4];
     if (has_numanswers()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->numanswers());
     }
 
@@ -2138,7 +2138,7 @@ void Log_Session_Question::clear_time() {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.Question.time)
 }
 
-// required int32 x = 2;
+// required uint64 x = 2;
 bool Log_Session_Question::has_x() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2149,20 +2149,20 @@ void Log_Session_Question::clear_has_x() {
   _has_bits_[0] &= ~0x00000002u;
 }
 void Log_Session_Question::clear_x() {
-  x_ = 0;
+  x_ = GOOGLE_ULONGLONG(0);
   clear_has_x();
 }
- ::google::protobuf::int32 Log_Session_Question::x() const {
+ ::google::protobuf::uint64 Log_Session_Question::x() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.x)
   return x_;
 }
- void Log_Session_Question::set_x(::google::protobuf::int32 value) {
+ void Log_Session_Question::set_x(::google::protobuf::uint64 value) {
   set_has_x();
   x_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.x)
 }
 
-// required int32 y = 3;
+// required uint64 y = 3;
 bool Log_Session_Question::has_y() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -2173,14 +2173,14 @@ void Log_Session_Question::clear_has_y() {
   _has_bits_[0] &= ~0x00000004u;
 }
 void Log_Session_Question::clear_y() {
-  y_ = 0;
+  y_ = GOOGLE_ULONGLONG(0);
   clear_has_y();
 }
- ::google::protobuf::int32 Log_Session_Question::y() const {
+ ::google::protobuf::uint64 Log_Session_Question::y() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.y)
   return y_;
 }
- void Log_Session_Question::set_y(::google::protobuf::int32 value) {
+ void Log_Session_Question::set_y(::google::protobuf::uint64 value) {
   set_has_y();
   y_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.y)
@@ -2346,31 +2346,31 @@ void Log_Session_Question::clear_answer() {
   // @@protoc_insertion_point(field_set_allocated:MathHelper.Log.Session.Question.answer)
 }
 
-// repeated int32 attempt = 7;
+// repeated uint32 attempt = 7;
 int Log_Session_Question::attempt_size() const {
   return attempt_.size();
 }
 void Log_Session_Question::clear_attempt() {
   attempt_.Clear();
 }
- ::google::protobuf::int32 Log_Session_Question::attempt(int index) const {
+ ::google::protobuf::uint32 Log_Session_Question::attempt(int index) const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.Question.attempt)
   return attempt_.Get(index);
 }
- void Log_Session_Question::set_attempt(int index, ::google::protobuf::int32 value) {
+ void Log_Session_Question::set_attempt(int index, ::google::protobuf::uint32 value) {
   attempt_.Set(index, value);
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.Question.attempt)
 }
- void Log_Session_Question::add_attempt(::google::protobuf::int32 value) {
+ void Log_Session_Question::add_attempt(::google::protobuf::uint32 value) {
   attempt_.Add(value);
   // @@protoc_insertion_point(field_add:MathHelper.Log.Session.Question.attempt)
 }
- const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+ const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
 Log_Session_Question::attempt() const {
   // @@protoc_insertion_point(field_list:MathHelper.Log.Session.Question.attempt)
   return attempt_;
 }
- ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+ ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 Log_Session_Question::mutable_attempt() {
   // @@protoc_insertion_point(field_mutable_list:MathHelper.Log.Session.Question.attempt)
   return &attempt_;
@@ -2505,7 +2505,7 @@ void Log_Session::clear_seed() {
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.seed)
 }
 
-// required int32 difficulty = 3;
+// required uint32 difficulty = 3;
 bool Log_Session::has_difficulty() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -2516,14 +2516,14 @@ void Log_Session::clear_has_difficulty() {
   _has_bits_[0] &= ~0x00000004u;
 }
 void Log_Session::clear_difficulty() {
-  difficulty_ = 0;
+  difficulty_ = 0u;
   clear_has_difficulty();
 }
- ::google::protobuf::int32 Log_Session::difficulty() const {
+ ::google::protobuf::uint32 Log_Session::difficulty() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Session.difficulty)
   return difficulty_;
 }
- void Log_Session::set_difficulty(::google::protobuf::int32 value) {
+ void Log_Session::set_difficulty(::google::protobuf::uint32 value) {
   set_has_difficulty();
   difficulty_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Session.difficulty)
@@ -2616,7 +2616,7 @@ void Log_Session::clear_endtime() {
 
 // Log_Options
 
-// optional int32 maxTries = 1 [default = 3];
+// optional uint32 maxTries = 1 [default = 3];
 bool Log_Options::has_maxtries() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2627,20 +2627,20 @@ void Log_Options::clear_has_maxtries() {
   _has_bits_[0] &= ~0x00000001u;
 }
 void Log_Options::clear_maxtries() {
-  maxtries_ = 3;
+  maxtries_ = 3u;
   clear_has_maxtries();
 }
- ::google::protobuf::int32 Log_Options::maxtries() const {
+ ::google::protobuf::uint32 Log_Options::maxtries() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Options.maxTries)
   return maxtries_;
 }
- void Log_Options::set_maxtries(::google::protobuf::int32 value) {
+ void Log_Options::set_maxtries(::google::protobuf::uint32 value) {
   set_has_maxtries();
   maxtries_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Options.maxTries)
 }
 
-// optional int32 numAnswers = 2 [default = 4];
+// optional uint32 numAnswers = 2 [default = 4];
 bool Log_Options::has_numanswers() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2651,14 +2651,14 @@ void Log_Options::clear_has_numanswers() {
   _has_bits_[0] &= ~0x00000002u;
 }
 void Log_Options::clear_numanswers() {
-  numanswers_ = 4;
+  numanswers_ = 4u;
   clear_has_numanswers();
 }
- ::google::protobuf::int32 Log_Options::numanswers() const {
+ ::google::protobuf::uint32 Log_Options::numanswers() const {
   // @@protoc_insertion_point(field_get:MathHelper.Log.Options.numAnswers)
   return numanswers_;
 }
- void Log_Options::set_numanswers(::google::protobuf::int32 value) {
+ void Log_Options::set_numanswers(::google::protobuf::uint32 value) {
   set_has_numanswers();
   numanswers_ = value;
   // @@protoc_insertion_point(field_set:MathHelper.Log.Options.numAnswers)
