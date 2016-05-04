@@ -14,6 +14,7 @@
 #include "resource1.h"
 #pragma comment( lib, "winmm" )
 //#elif defined __linux__ || defined __APPLE__
+//BLAH
 #else
 #error Platform not supported
 #endif
