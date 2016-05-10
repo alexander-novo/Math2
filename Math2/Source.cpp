@@ -5,8 +5,6 @@
 #include <sys/stat.h> //To check if file exists
 #include <time.h>
 
-#include <google/protobuf/util/message_differencer.h> //To compare messages
-
 #ifdef _WIN32
 #define NOMINMAX //For windows.h and protobuf to play nicely
 #include <conio.h>
@@ -14,10 +12,15 @@
 #include "resource1.h"
 #pragma comment( lib, "winmm" )
 //#elif defined __linux__ || defined __APPLE__
-//BLAH
 #else
 #error Platform not supported
 #endif
+
+#include <google/protobuf/util/message_differencer.h> //To compare messages
+
+#include "openssl/ssl.h"
+#include "openssl/bio.h"
+#include "openssl/err.h"
 
 #include "Math.pb.h"
 #include "MathOperation.h"
@@ -42,6 +45,7 @@ string getCurrTime();
 int getDegreeFromInput(int, int, int);
 unsigned long long getNumByPlace(mt19937_64&, unsigned int, unsigned long long = 0);
 void getStrFromInput(std::regex, char*);
+void getExePath(char*, int);
 bool doesFileExist(const char*);
 
 #ifdef _WIN32
@@ -114,6 +118,92 @@ class WriteOnShutdown {
 };
 
 int main() {
+	BIO * bio;
+	SSL * ssl;
+	SSL_CTX * ctx;
+
+	char blah[MAX_PATH];
+	getExePath(blah, MAX_PATH);
+	cout << blah;
+
+	int p;
+
+	char * request = "GET / HTTP/1.1\x0D\x0AHost: www.verisign.com\x0D\x0A\x43onnection: Close\x0D\x0A\x0D\x0A";
+	char r[1024];
+
+	/* Set up the library */
+
+	ERR_load_BIO_strings();
+	SSL_load_error_strings();
+	OpenSSL_add_all_algorithms();
+
+	/* Set up the SSL context */
+
+	ctx = SSL_CTX_new(SSLv23_client_method());
+
+	/* Load the trust store */
+
+	if (!SSL_CTX_load_verify_locations(ctx, "TrustStore.pem", NULL))
+	{
+		fprintf(stderr, "Error loading trust store\n");
+		ERR_print_errors_fp(stderr);
+		SSL_CTX_free(ctx);
+		return 0;
+	}
+
+	/* Setup the connection */
+
+	bio = BIO_new_ssl_connect(ctx);
+
+	/* Set the SSL_MODE_AUTO_RETRY flag */
+
+	BIO_get_ssl(bio, &ssl);
+	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+
+	/* Create and setup the connection */
+
+	BIO_set_conn_hostname(bio, "www.verisign.com:https");
+
+	if (BIO_do_connect(bio) <= 0)
+	{
+		fprintf(stderr, "Error attempting to connect\n");
+		ERR_print_errors_fp(stderr);
+		BIO_free_all(bio);
+		SSL_CTX_free(ctx);
+		return 0;
+	}
+
+	/* Check the certificate */
+
+	if (SSL_get_verify_result(ssl) != X509_V_OK)
+	{
+		fprintf(stderr, "Certificate verification error: %i\n", SSL_get_verify_result(ssl));
+		BIO_free_all(bio);
+		SSL_CTX_free(ctx);
+		return 0;
+	}
+
+	/* Send the request */
+
+	BIO_write(bio, request, strlen(request));
+
+	/* Read in the response */
+
+	for (;;)
+	{
+		p = BIO_read(bio, r, 1023);
+		if (p <= 0) break;
+		r[p] = 0;
+		printf("%s", r);
+	}
+
+	/* Close the connection and free the context */
+
+	BIO_free_all(bio);
+	SSL_CTX_free(ctx);
+	return 0;
+	
+	/*
 	//Stuff we need to keep track of
 	char name[100];
 	char* filename = new char[100];
@@ -148,7 +238,7 @@ int main() {
 	while(operation != NULL) {
 		doQuestion(operation, sesh, difficulty, *log.mutable_options(), rng);
 		operation = doMainMenu(name, filename, log, difficulty);
-	}
+	}*/
 }
 
 //MENU FUNCTIONS
@@ -736,6 +826,15 @@ void getStrFromInput(regex reg, char* buf) {
 bool doesFileExist(const char* fileName) {
 	struct stat buf;
 	return (stat(fileName, &buf) == 0);
+}
+
+string getExePath() {
+#ifdef _WIN32
+	char buffer[MAX_PATH];
+	GetModuleFileNameA(NULL, buffer, MAX_PATH);
+	string re(buffer);
+	return re.substr(0, re.find_last_of("\\/"));
+#endif
 }
 
 void playSound(int res) {
